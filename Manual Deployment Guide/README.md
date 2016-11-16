@@ -34,7 +34,7 @@ create this solution.
 4.  A network connection
 
 5.  [Microsoft Visual
-    Studio](https://www.visualstudio.com/post-download-vs?sku=community&clcid=0x409&downloadrename=true)
+    Studio 2015](https://www.visualstudio.com/post-download-vs?sku=community&clcid=0x409&downloadrename=true)
 
 6.  [SQL Server Management
     Studio](https://msdn.microsoft.com/en-us/library/mt238290.aspx) or
@@ -272,7 +272,7 @@ We need to create an Azure SQL Database to store customer information and status
 
     -   Click on the ***callcentersolution*\[UI\]\[n\]-*db*** that you created on the server.
 
-    -   Click ***New Query*** at the tool bar.
+    -   Right click on the database and select ***New Query***.
 
     -   Copy and execute the SQL script located in the package directory
     ***SQL Script\\databasescript.sql to*** create the necessary table for the solution <br/>
@@ -280,13 +280,9 @@ We need to create an Azure SQL Database to store customer information and status
 
 ### 6. Build the source code with new credentials.
 
--   You will need Visual Studio to work with code, you can install it
-    from
-    [here](https://www.visualstudio.com/post-download-vs?sku=community&clcid=0x409&downloadrename=true)
+-   You will need Visual Studio to work with code, you can install it from [here](https://www.visualstudio.com/post-download-vs?sku=community&clcid=0x409&downloadrename=true). The version of the Visual Studio should not matter, the guide has been tested on Visual Studio 2015.
 
--   Unzip the Source code folder and navigate to it.
-
--   Double click on the solution file (.sln extension), this will open
+-   Navigate to the CI-Callcenterdemo folder and double click on the solution file (.sln extension), this will open
     the solution in Visual Studio.
 
 -   Open **App.config** file and fill in the values from the above tables under appSettings section. Following are the values you need to change
@@ -310,7 +306,8 @@ We need to create an Azure SQL Database to store customer information and status
 <!-- Azure SQL Connection String, you can get it from portal.azure.com -->
 <add key="dbConnectionString" value="CHANGE_ME"/>    
 ```
--  To build your code, select Debug from Solution Configurations dropdown and select x64 for solution platforms dropdown.
+
+-  To build your code, select Debug from Solution Configurations dropdown and select x64 for solution platforms dropdown. If you don't see x64 in the drop down, click on the Configuration Manager in solution platforms dropdown (next to the green start icon). In the Configuration Manager window click on the Active solution platform dropdown, select new and then add x64 as one of the solution platform.
 
 -  Click on the green start icon.
 
@@ -329,10 +326,9 @@ We need to create an Azure SQL Database to store customer information and status
 
 -   This will open the publish wizard.
 
--   On Publish wizard, select the location on your machine where you
-    want to publish the solution.
+-   On Publish wizard, select the location on your machine where you want to publish the solution.
 
--  Click Next, and select from CD-ROM or DVD-ROM.
+-  Click Next, and select From CD-ROM or DVD-ROM.
 
 -   On the next screen, select “The application will not check for updates”
 
