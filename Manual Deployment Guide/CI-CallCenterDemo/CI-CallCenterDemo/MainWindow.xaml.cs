@@ -4,37 +4,32 @@ using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
-
-using Microsoft.ProjectOxford.SpeechRecognition;
 using System.ComponentModel;
 using System.Threading;
 using System.Data.SqlClient;
 using System.Windows.Input;
 using System.Text;
-using System.Windows.Controls;
+using Microsoft.CognitiveServices.SpeechRecognition;
 
 namespace ContosoInsurance_CallCenterDemo
+
 {
-
-
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         string message;
-
         string _speechAPIAccountKey = ConfigurationManager.AppSettings["speechAPIAccountKey"];
         string _luisAPIAccountKey = ConfigurationManager.AppSettings["luisAPIAccountKey"];
         string _luisAppID = ConfigurationManager.AppSettings["luisAppID"];
         string _luisAppIDChinese = ConfigurationManager.AppSettings["luisAppIDChinese"];
         string _recoLanguage = "en-US";
         string _connectionString = ConfigurationManager.AppSettings["dbConnectionString"];
-
-
         String responseEntity = "";
         String responsePhrase = "";
-
-        private MicrophoneRecognitionClient _micClient;
+        private MicrophoneRecognitionClient micClient;
         private static int _identityAttempts = 1;
         private AutoResetEvent _FinalResponseEvent;
+        private Boolean nonNumberEntered = false;
+        private string callednumber;
 
         #region Events
 
@@ -63,12 +58,11 @@ namespace ContosoInsurance_CallCenterDemo
                 try
                 {
                     this.DragMove();
-
-
                 }
                 catch (Exception ex)
-                { }
-
+                {
+                    WriteLine("Exception thrown: " + ex.ToString());
+                }
             }
         }
         private void Window_MouseUp(object sender, MouseButtonEventArgs e)
@@ -79,14 +73,15 @@ namespace ContosoInsurance_CallCenterDemo
                 {
                     Console.WriteLine(this.Left + this.Width);
                     Console.WriteLine(this.Left);
-                    _popup.HorizontalOffset = 500;
                     Console.Write(_popup.HorizontalOffset);
                 }
                 catch (Exception ex)
-                { }
-
+                {
+                    WriteLine("Exception thrown: " + ex.ToString());
+                }
             }
         }
+
         private void Popup_MouseDown(object sender, DragEventArgs e)
         {
             e.Handled = true;
@@ -95,48 +90,34 @@ namespace ContosoInsurance_CallCenterDemo
 
         private void _popup_DragEnter(object sender, DragEventArgs e)
         {
-
-
         }
 
-        private Boolean nonNumberEntered = false;
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-
             StringBuilder sb = new StringBuilder();
             var str = e.Key.ToString();
-
             if (txtNumber.Text.Length >= 5)
             {
                 txtNumber.Text = string.Empty;
             }
-
             Console.WriteLine(e.Key.ToString());
 
             // Determine whether the keystroke is a number from the top of the keyboard.
             if (nonNumberEntered == false && e.Key != Key.RightShift && e.Key != Key.LeftShift && (e.Key >= Key.D0 || e.Key <= Key.D9 || e.Key >= Key.NumPad0 || e.Key <= Key.NumPad9))
             {
-                // Determine whether the keystroke is a number from the keypad.
-
-                // Determine whether the keystroke is a backspace.
-
                 nonNumberEntered = false;
-
                 foreach (char c in str)
                 {
                     // Check for numeric characters (hex in this case).  Add "." and "e" if float,
                     // and remove letters.  Include initial space because it is harmless.
-
                     if ((c >= '0' && c <= '9'))
                     {
                         sb.Append(c);
                     }
                     else if (c == '#')
                     {
-
                         notifyIdentificationResponse(sb.ToString());
                     }
-
                 }
                 txtNumber.Text += sb.ToString();
                 //English Path
@@ -165,36 +146,29 @@ namespace ContosoInsurance_CallCenterDemo
                 }
             }
         }
-
         /// <summary>
         //  Raises the System.Windows.Window.Closed event.
         /// </summary>
         /// <param name="e">An System.EventArgs that contains the event data.</param>
         protected override void OnClosed(EventArgs e)
         {
-            if (null != _micClient)
+            if (null != micClient)
             {
-                _micClient.Dispose();
+                micClient.Dispose();
             }
-
             _FinalResponseEvent.Dispose();
-
             base.OnClosed(e);
         }
-
-        private string callednumber;
 
         private void hashButton_click(object sender, RoutedEventArgs e)
         {
             callednumber += ((System.Windows.Controls.Button)sender).Content;
-
             notifyIdentificationResponse(callednumber);
         }
 
         private void playGreetings()
         {
             System.Media.SoundPlayer myPlayer = new System.Media.SoundPlayer();
-
             //Getting a filepath for the sound
             String path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "telephonering.wav");
             myPlayer.SoundLocation = path;
@@ -236,8 +210,8 @@ namespace ContosoInsurance_CallCenterDemo
                 txtNumber.Text = string.Empty;
                 callednumber = string.Empty;
             }
-
         }
+
         /// <summary>
         /// Handles the Click event of the _startButton control.
         /// </summary>
@@ -251,11 +225,9 @@ namespace ContosoInsurance_CallCenterDemo
         private void startListening()
         {
             LogRecognitionStart("microphone", _recoLanguage, SpeechRecognitionMode.ShortPhrase);
-            if (_micClient == null)
-            {
-                _micClient = CreateMicrophoneRecoClientWithIntent(_recoLanguage);
-            }
-            _micClient.StartMicAndRecognition();
+            Console.WriteLine("Inside Start Listening");
+            micClient = CreateMicrophoneRecoClient(_recoLanguage, SpeechRecognitionMode.ShortPhrase);
+            micClient.StartMicAndRecognition();
             _startButton.IsEnabled = false;
         }
 
@@ -264,35 +236,23 @@ namespace ContosoInsurance_CallCenterDemo
             WriteLine("\n--- Start speech recognition using " + recoSource + " with " + recoMode + " mode in " + recoLanguage + " language ----\n\n");
         }
 
-        MicrophoneRecognitionClient CreateMicrophoneRecoClientWithIntent(string recoLanguage)
+        MicrophoneRecognitionClient CreateMicrophoneRecoClient(string recoLanguage, SpeechRecognitionMode recoMode)
         {
-            WriteLine("--- Start microphone dictation with Intent detection ----");
-
-            MicrophoneRecognitionClientWithIntent intentMicClient =
-             SpeechRecognitionServiceFactory.CreateMicrophoneClientWithIntent(recoLanguage,
-                                                                              _speechAPIAccountKey,
-                                                                              _luisAppID,
-                                                                              _luisAPIAccountKey);
-            if (recoLanguage == "zh-CN")
-                intentMicClient =
-                    SpeechRecognitionServiceFactory.CreateMicrophoneClientWithIntent(recoLanguage,
-                                                                                     _speechAPIAccountKey,
-                                                                                     _luisAppIDChinese,
-                                                                                     _luisAPIAccountKey);
-            intentMicClient.OnIntent += OnIntentHandler;
+            this.micClient = SpeechRecognitionServiceFactory.CreateMicrophoneClient(
+                recoMode,
+                recoLanguage,
+                _speechAPIAccountKey);
 
             // Event handlers for speech recognition results
-            intentMicClient.OnMicrophoneStatus += OnMicrophoneStatus;
-            intentMicClient.OnPartialResponseReceived += OnPartialResponseReceivedHandler;
-            intentMicClient.OnResponseReceived += OnMicShortPhraseResponseReceivedHandler;
-            intentMicClient.OnConversationError += OnConversationErrorHandler;
-
-            intentMicClient.StartMicAndRecognition();
-
-            return intentMicClient;
-
+            this.micClient.OnMicrophoneStatus += this.OnMicrophoneStatus;
+            this.micClient.OnPartialResponseReceived += this.OnPartialResponseReceivedHandler;
+            if (recoMode == SpeechRecognitionMode.ShortPhrase)
+            {
+                this.micClient.OnResponseReceived += this.OnMicShortPhraseResponseReceivedHandler;
+            }
+            this.micClient.OnConversationError += this.OnConversationErrorHandler;
+            return micClient;
         }
-
 
         /// <summary>
         ///     Called when a final response is received;   
@@ -301,21 +261,11 @@ namespace ContosoInsurance_CallCenterDemo
         {
             Dispatcher.Invoke((Action)(() =>
             {
-                WriteLine("--- OnMicShortPhraseResponseReceivedHandler ---");
-
+                this.WriteLine("--- OnMicShortPhraseResponseReceivedHandler ---");
                 _FinalResponseEvent.Set();
-
-                // we got the final result, so it we can end the mic reco.  No need to do this
-                // for dataReco, since we already called endAudio() on it as soon as we were done
-                // sending all the data.
-                _micClient.EndMicAndRecognition();
-
-                // BUGBUG: Work around for the issue when cached _micClient cannot be re-used for recognition.
-                _micClient.Dispose();
-                _micClient = null;
-
-                WriteResponseResult(e);
-
+                // we got the final result, so it we can end the mic reco.
+                this.micClient.EndMicAndRecognition();
+                this.WriteResponseResult(e);
                 _startButton.IsEnabled = true;
             }));
         }
@@ -325,7 +275,7 @@ namespace ContosoInsurance_CallCenterDemo
             Console.WriteLine(e.PhraseResponse.RecognitionStatus);
             if (e.PhraseResponse.Results.Length == 0)
             {
-                WriteLine("No phrase resonse is available.");
+                this.WriteLine("No phrase resonse is available.");
                 startListening();
             }
             else
@@ -334,7 +284,8 @@ namespace ContosoInsurance_CallCenterDemo
                 for (int i = 0; i < e.PhraseResponse.Results.Length; i++)
                 {
                     WriteLine("[{0}] Confidence={1}, Text=\"{2}\"",
-                                    i, e.PhraseResponse.Results[i].Confidence,
+                                    i,
+                                    e.PhraseResponse.Results[i].Confidence,
                                     e.PhraseResponse.Results[i].DisplayText);
                     if (i == 0)
                         message = e.PhraseResponse.Results[i].DisplayText;
@@ -343,7 +294,7 @@ namespace ContosoInsurance_CallCenterDemo
                 {
                     this.speechToTextCallBack(message);
                 }
-                WriteLine();
+                this.WriteLine();
             }
         }
 
@@ -352,10 +303,9 @@ namespace ContosoInsurance_CallCenterDemo
         /// </summary>
         void OnIntentHandler(object sender, SpeechIntentEventArgs e)
         {
-
-            WriteLine("--- Intent received by OnIntentHandler() ---");
-            WriteLine("{0}", e.Payload);
-            WriteLine();
+            this.WriteLine("--- Intent received by OnIntentHandler() ---");
+            this.WriteLine("{0}", e.Payload);
+            this.WriteLine();
         }
 
         /// <summary>
@@ -363,9 +313,9 @@ namespace ContosoInsurance_CallCenterDemo
         /// </summary>
         void OnPartialResponseReceivedHandler(object sender, PartialSpeechResponseEventArgs e)
         {
-            WriteLine("--- Partial result received by OnPartialResponseReceivedHandler() ---");
-            WriteLine("{0}", e.PartialResult);
-            WriteLine();
+            this.WriteLine("--- Partial result received by OnPartialResponseReceivedHandler() ---");
+            this.WriteLine("{0}", e.PartialResult);
+            this.WriteLine();
         }
 
         /// <summary>
@@ -378,10 +328,10 @@ namespace ContosoInsurance_CallCenterDemo
                 _startButton.IsEnabled = true;
             });
 
-            WriteLine("--- Error received by OnConversationErrorHandler() ---");
-            WriteLine("Error code: {0}", e.SpeechErrorCode.ToString());
-            WriteLine("Error text: {0}", e.SpeechErrorText);
-            WriteLine();
+            this.WriteLine("--- Error received by OnConversationErrorHandler() ---");
+            this.WriteLine("Error code: {0}", e.SpeechErrorCode.ToString());
+            this.WriteLine("Error text: {0}", e.SpeechErrorText);
+            this.WriteLine();
         }
 
         /// <summary>
@@ -401,12 +351,10 @@ namespace ContosoInsurance_CallCenterDemo
             });
         }
 
-
-        void WriteLine()
+        private void WriteLine()
         {
-            WriteLine(string.Empty);
+            this.WriteLine(string.Empty);
         }
-
 
         void WriteLine(string format, params object[] args)
         {
@@ -438,8 +386,6 @@ namespace ContosoInsurance_CallCenterDemo
                 WriteLine("INTENT SCORE: " + score);
                 if (score > 0.5 && result.entities.Length > 0 && result.entities[0].type != "builtin.number")
                 {
-                    // Moved above, also printing entity type, intent and score
-                    //WriteLine(result.entities[0].entity);
                     responseEntity = (result.entities[0].type);
                     responsePhrase = result.entities[0].entity;
                     if (this._recoLanguage == "zh-CN")
@@ -452,6 +398,7 @@ namespace ContosoInsurance_CallCenterDemo
                     }
                     else
                         ContosoInsurance_CallCenterDemo.TextToSpeech.Talk("Okay, you are looking for an update on your " + responseEntity + ". Can you please let me know your CRN?");
+
                     this.speechToTextCallBack = notifyIdentificationResponse;
                     startListening();
                 }
@@ -479,7 +426,6 @@ namespace ContosoInsurance_CallCenterDemo
 
         public void notifyIdentificationResponse(String message)
         {
-
             _identityAttempts++;
             if (this._recoLanguage == "zh-CN")
             {

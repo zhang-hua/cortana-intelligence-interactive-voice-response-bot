@@ -1,14 +1,6 @@
 ﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Web;
 using System.Net;
-using System.Net.Http;
-using System.Media;
-using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Configuration;
@@ -65,7 +57,7 @@ namespace ContosoInsurance_CallCenterDemo
         }
         public LUISResponse Call(string message)
         {
-            // If clientid or client secret has special characters, encode before sending request 
+           // If clientid or client secret has special characters, encode before sending request 
             if (this._recoLanguage == "zh-CN")
                 this.request = string.Format("id={0}&subscription-key={1}&q={2}",
                               HttpUtility.UrlEncode(AppIdCh),

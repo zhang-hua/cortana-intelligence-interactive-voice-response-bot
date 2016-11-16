@@ -1,17 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Linq;
 using System.Configuration;
 using System.Text;
 using System.Threading;
-using System.Web;
 using System.Net;
 using System.Net.Http;
 using System.Media;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
-using System.Runtime.Serialization.Json;
 
 namespace ContosoInsurance_CallCenterDemo
 {
@@ -25,29 +22,18 @@ namespace ContosoInsurance_CallCenterDemo
     /// This class demonstrates how to get a valid O-auth token
     public class Authentication
     {
-        public static readonly string AccessUri = "https://oxford-speech.cloudapp.net/token/issueToken";
-        private string clientId;
-        private string clientSecret;
-        private string request;
-        private AccessTokenInfo token;
+        public static readonly string AccessUri = "https://api.cognitive.microsoft.com/sts/v1.0/issueToken";
+        private string apiKey;
+        private string accessToken;
         private Timer accessTokenRenewer;
 
         //Access token expires every 10 minutes. Renew it every 9 minutes only.
         private const int RefreshTokenDuration = 9;
 
-        public Authentication(string primarySubscriptionKey, string secondarySubscriptionKey)
+        public Authentication(string apiKey)
         {
-            this.clientId = primarySubscriptionKey;
-            this.clientSecret = secondarySubscriptionKey;
-
-            // If clientid or client secret has special characters, encode before sending request 
-            this.request = string.Format("grant_type=client_credentials&client_id={0}&client_secret={1}&scope={2}",
-                                          HttpUtility.UrlEncode(primarySubscriptionKey),
-                                          HttpUtility.UrlEncode(secondarySubscriptionKey),
-                                          HttpUtility.UrlEncode("https://speech.platform.bing.com"));
-
-            this.token = HttpPost(AccessUri, this.request);
-
+            this.apiKey = apiKey;
+            this.accessToken = HttpPost(AccessUri, this.apiKey);
             // renew the token every specfied minutes
             accessTokenRenewer = new Timer(new TimerCallback(OnTokenExpiredCallback),
                                            this,
@@ -55,20 +41,20 @@ namespace ContosoInsurance_CallCenterDemo
                                            TimeSpan.FromMilliseconds(-1));
         }
 
-        public AccessTokenInfo GetAccessToken()
+        public string GetAccessToken()
         {
-            return this.token;
+            return this.accessToken;
         }
 
         private void RenewAccessToken()
         {
-            AccessTokenInfo newAccessToken = HttpPost(AccessUri, this.request);
+            string newAccessToken = HttpPost(AccessUri, this.apiKey);
             //swap the new token with old one
             //Note: the swap is thread unsafe
-            this.token = newAccessToken;
+            this.accessToken = newAccessToken;
             Console.WriteLine(string.Format("Renewed token for user: {0} is: {1}",
-                              this.clientId,
-                              this.token.access_token));
+                              this.apiKey,
+                              this.accessToken));
         }
 
         private void OnTokenExpiredCallback(object stateInfo)
@@ -94,24 +80,35 @@ namespace ContosoInsurance_CallCenterDemo
             }
         }
 
-        private AccessTokenInfo HttpPost(string accessUri, string requestDetails)
+
+        private string HttpPost(string accessUri, string apiKey)
         {
-            //Prepare OAuth request 
+            // Prepare OAuth request 
             WebRequest webRequest = WebRequest.Create(accessUri);
-            webRequest.ContentType = "application/x-www-form-urlencoded";
             webRequest.Method = "POST";
-            byte[] bytes = Encoding.ASCII.GetBytes(requestDetails);
-            webRequest.ContentLength = bytes.Length;
-            using (Stream outputStream = webRequest.GetRequestStream())
-            {
-                outputStream.Write(bytes, 0, bytes.Length);
-            }
+            webRequest.ContentLength = 0;
+            webRequest.Headers["Ocp-Apim-Subscription-Key"] = apiKey;
+
             using (WebResponse webResponse = webRequest.GetResponse())
             {
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(AccessTokenInfo));
-                //Get deserialized object from JSON stream
-                AccessTokenInfo token = (AccessTokenInfo)serializer.ReadObject(webResponse.GetResponseStream());
-                return token;
+                using (Stream stream = webResponse.GetResponseStream())
+                {
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        byte[] waveBytes = null;
+                        int count = 0;
+                        do
+                        {
+                            byte[] buf = new byte[1024];
+                            count = stream.Read(buf, 0, 1024);
+                            ms.Write(buf, 0, count);
+                        } while (stream.CanRead && count > 0);
+
+                        waveBytes = ms.ToArray();
+
+                        return Encoding.UTF8.GetString(waveBytes);
+                    }
+                }
             }
         }
     }
@@ -447,18 +444,18 @@ namespace ContosoInsurance_CallCenterDemo
             Console.WriteLine("Unable to complete the TTS request: [{0}]", e.ToString());
         }
 
-        public static void Talk(string message, string recoLanguage = "en-US") //string language="English")
+        public static void Talk(string message, string recoLanguage = "en-US")
         {
             Console.WriteLine("Starting Authtentication");
-            AccessTokenInfo token;
+            string accessToken;
 
             // Note: Sign up at http://www.projectoxford.ai for the client credentials.
-            Authentication auth = new Authentication(ConfigurationManager.AppSettings["speechAPIAccountKey"], ConfigurationManager.AppSettings["speechAPISecondaryAccountKey"]);
+            Authentication auth = new Authentication(ConfigurationManager.AppSettings["speechAPIAccountKey"]);
 
             try
             {
-                token = auth.GetAccessToken();
-                Console.WriteLine("Token: {0}\n", token.access_token);
+                accessToken = auth.GetAccessToken();
+                Console.WriteLine("Token: {0}\n", accessToken);
             }
             catch (Exception ex)
             {
@@ -467,9 +464,6 @@ namespace ContosoInsurance_CallCenterDemo
                 Console.WriteLine(ex.Message);
                 return;
             }
-
-            Console.WriteLine("Starting TTSSample request code execution.");
-
             string requestUri = "https://speech.platform.bing.com/synthesize";
 
             string Locale_str = recoLanguage;
@@ -491,7 +485,7 @@ namespace ContosoInsurance_CallCenterDemo
                 VoiceName = VoiceName_str,
                 // Service can return audio in different output format. 
                 OutputFormat = AudioOutputFormat.Riff16Khz16BitMonoPcm,
-                AuthorizationToken = "Bearer " + token.access_token,
+                AuthorizationToken = "Bearer " + accessToken,
             });
 
             cortana.OnAudioAvailable += PlayAudio;
