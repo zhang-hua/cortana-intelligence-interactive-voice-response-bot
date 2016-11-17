@@ -177,43 +177,33 @@ package zip file with all the resources.
 We will first create LUIS application that understands intents for
 English Speaker.
 
--   Navigate to <https://www.luis.ai> and login with a
-    Microsoft account.
+-   Navigate to <https://www.luis.ai> and login with a Microsoft account.
 
 -   Click the **My Applications** tab on the top right.
 
--   Click on **New App** button and select **Import existing
-    application** option.
+-   Click on the **New App** button and select the **Import existing application** option.
 
--   Navigate to LUIS models folder in the solution package, select the
-    **ContosoInsurance-CallCenter-English.json** file.
+-   Navigate to LUIS models folder in the solution package, select the **ContosoInsurance-CallCenter-English.json** file.
 
--   Provide an optional name for your app, by default it would pick the
-    name of the imported json file as the app name.
+-   Provide an optional name for your app, by default it would pick the name of the imported json file as the app name.
 
--   Click Import, this would take few mins.
+-   Click Import, this would take few minutes to complete.
 
--   On the newly created application page, click on **train** button on
-    bottom left. This would also take few mins.
+-   On the newly created application page, click on the **Train** button on the bottom left. This step will also take a few minutes.
 
--   The publish tab on top left should be active now, click it and select **Publish as web service.**
+-   When training has completed, a **Publish** button will appear in the left sidebar. Click the **Publish** button to load a publishing options pane, then click the **Publish as web service** button at the upper-right of the pane.
 
--   Close the Publish dialog and click on the App Settings tab and make a note of the **App Id** and save it in the table below.
+-   Close the Publish dialog and click on the App Settings button and make a note of the **App Id**.
 
-_Next, we will create LUIS Application that understands intent for Chinese speaker_
+_Next, we will create LUIS Application that understands intent for Chinese speaker. Follow the exact same steps as above, except select the  **ContosoInsurance-CallCenter-Chinese.json** file instead of the json file for English. Publish the app and make a note of the App Id_
 
--   Follow the exact same steps as above, except select the
-    **ContosoInsurance-CallCenter-Chinese.json** file on step 4.
+Now that we have LUIS applications created for English and Chinese, we need to add our LUIS Account key that we obtained from the Azure portal to these applications. 
+ 
+-   In the [LUIS portal](luis.ai), click on your account name on top right and select **My Settings**.
 
--   Publish the app and make a note of App Id and save it in the table
-    below, we will need it later.
+-   Under My Settings, go to Subscription Keys section and add the **LUIS API Account Key** that you saved in the previous step and click on **Add Key** button.
 
--   In the LUIS portal (luis.ai), click on your account name on top right and select My Settings.
-
--   Under My Settings, go to Subscription Keys section and add the **LUIS API Account Key** that you saved in the previous step and click on Add Key button.
-
--   Make sure the key shows up in Assigned Key section for
-    your applications.
+-   Make sure the key shows up in Assigned Key section for your applications.
 
 ### 5. Azure SQL Server and Database
 
@@ -264,7 +254,7 @@ We need to create an Azure SQL Database to store customer information and status
 
 -   Launch [*SQL Server Management Studio*](https://msdn.microsoft.com/en-us/library/mt238290.aspx) (SSMS), or a similar tool, and connect to the database with the information you recorded previously. Following instructions are for SSMS
 
-    - NOTE: The server name in most tools will require the full name:
+    - NOTE: The server name in most tools will require the full name: 
     **callcentersolution\[UI\]\[n\]-server.database.windows.net,1433**
 
     -   For Authentication, select SQL Server Authentication and enter the
@@ -335,3 +325,5 @@ We need to create an Azure SQL Database to store customer information and status
 -   Click Next and then select Finish.
 
 -   The publish folder will have an .exe file, you can install the solution locally using this file.
+
+    **NOTE: If the publish step fails with an error about path or file name being too long, try copying the [source code](https://github.com/Azure/cortana-intelligence-call-center-solution/tree/master/Manual%20Deployment%20Guide/CI-Callcenterdemo) to a folder with shorter path on disk. In C#, fully qualified file name must be less than 260 characters, and the directory name must be less than 248 characters.**
