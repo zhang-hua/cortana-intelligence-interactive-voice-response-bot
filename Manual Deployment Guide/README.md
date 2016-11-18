@@ -197,7 +197,7 @@ English Speaker.
 
 _Next, we will create LUIS Application that understands intent for Chinese speaker. Follow the exact same steps as above, except select the  **ContosoInsurance-CallCenter-Chinese.json** file instead of the json file for English. Publish the app and make a note of the App Id_
 
-Now that we have LUIS applications created for English and Chinese, we need to add our LUIS Account key that we obtained from the Azure portal to these applications. 
+Now that we have LUIS applications created for English and Chinese, we need to associate our LUIS API key that we recorded earlier to these applications. 
  
 -   In the [LUIS portal](luis.ai), click on your account name on top right and select **My Settings**.
 
@@ -215,7 +215,7 @@ We need to create an Azure SQL Database to store customer information and status
 
 -   Enter the name ***callcentersolution\[UI\]\[n\]-db*** for the database name
 
--   Resource group: Previously created
+-   Resource group: Previously created 
     ***callcentersolution\[UI\]\[n\]-rg***
 
 -   Select blank database for ***source***
@@ -247,10 +247,9 @@ We need to create an Azure SQL Database to store customer information and status
 
     **NOTE:** This firewall rule is not recommended for production level systems but for this solution it is acceptable. You will want to set this rule to the IP range of your secure system.
 
--   Click on the SQL Server Database that you just created, under
-    properties tab click on “**show database connection strings**”.
+-   Click on the SQL Server Database that you just created, under Settings -> Properties tab click on “**show database connection strings**”.
 
--   Save the connection string for ADO.NET along with username and password
+-   Save the connection string for ADO.NET along with username and password for your database.
 
 -   Launch [*SQL Server Management Studio*](https://msdn.microsoft.com/en-us/library/mt238290.aspx) (SSMS), or a similar tool, and connect to the database with the information you recorded previously. Following instructions are for SSMS
 
@@ -258,7 +257,9 @@ We need to create an Azure SQL Database to store customer information and status
     **callcentersolution\[UI\]\[n\]-server.database.windows.net,1433**
 
     -   For Authentication, select SQL Server Authentication and enter the
-    Login and Password
+    Login and Password.
+
+    - After you successfully Login, click on the databases folder and expand it.
 
     -   Click on the ***callcentersolution*\[UI\]\[n\]-*db*** that you created on the server.
 
@@ -297,7 +298,7 @@ We need to create an Azure SQL Database to store customer information and status
 <add key="dbConnectionString" value="CHANGE_ME"/>    
 ```
 
--  To build your code, select Debug from Solution Configurations dropdown and select x64 for solution platforms dropdown. If you don't see x64 in the drop down, click on the Configuration Manager in solution platforms dropdown (next to the green start icon). In the Configuration Manager window click on the Active solution platform dropdown, select new and then add x64 as one of the solution platform.
+-  To build your code, select **Debug** from Solution Configurations dropdown and select **x64** for solution platforms dropdown (next to the green start icon). If you don't see x64 in the drop down, click on the Configuration Manager in solution platforms dropdown. In the Configuration Manager window click on the Active solution platform dropdown, select new and then add x64 as one of the solution platform.
 
 -  Click on the green start icon.
 
