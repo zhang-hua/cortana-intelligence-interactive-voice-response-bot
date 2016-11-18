@@ -256,7 +256,7 @@ We need to create an Azure SQL Database to store customer information and status
 
 -   Under ***Settings*** for the new server, click ***Firewall*** and create a rule called ***open*** with the IP range of 0.0.0.0 to 255.255.255.255. This will allow you to access the database from your desktop. Click ***Save.***
 
-    **NOTE:** This firewall rule is not recommended for production level systems but for this solution it is acceptable. You will want to set this rule to the IP range of your secure system.
+    :exclamation: **NOTE:** This firewall rule is not recommended for production level systems but for this solution it is acceptable. You will want to set this rule to the IP range of your secure system.
 
 -   Click on the SQL Server Database that you just created, under Settings -> Properties tab click on “**show database connection strings**”.
 
