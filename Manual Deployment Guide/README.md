@@ -57,6 +57,17 @@ The solution could be divided into following four steps
 
 4.  Speak the response to the user using the Speech APIs.
 
+###LUIS
+
+One of the key problems in human-computer interactions is the ability of the computer to understand what a person wants, and to find the pieces of information that are relevant to their intent. 
+Language Understanding Intelligent Service (LUIS) is designed to provide you with an easy way to create language understanding models specific to your domain, which allow your applications to understand user commands. LUIS REST APIs provide easy way to consume these models in your application.
+
+
+All LUIS applications are centered around a domain-specific topic, for example booking of tickets, flights, hotels, rental cars etc. or content related to exercising, tracking fitness efforts and setting goals. You need to decide on a domain-specific topic before you can create your LUIS application. In this case, we are taking example of an insurance company's call center application. In the application, you will bundle together the intents and entities that are important to your task. One of the key intents relevant to the domain of insurance is "status". An example of entity that is important is "claim". Once you have identified the intents and entities, it is possible for LUIS to take appropriate action, when a user interacts with your application.
+
+To get started with basics of LUIS, please go through this [tutorial](https://www.microsoft.com/cognitive-services/en-us/LUIS-api/documentation/GetStartedWithLUIS-Basics). 
+
+
 ### Setup Steps
 
 The remainder of this document walks the reader through the creation of
