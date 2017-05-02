@@ -19,7 +19,8 @@
   * [Using entities with search (LUIS & Azure Search)](#using-entities-with-search-luis--azure-search)
   * [Identify common synonyms (Azure Search)](#identify-common-synonyms-azure-search)
   * [Data Wrangling (SQL Server)](#data-wrangling-sql-server)
-
+- [Copyright](#copyright)
+- [License](#license)
 <!-- tocstop -->
 
 # Platforms
@@ -55,18 +56,18 @@ To run unit tests, run `npm test`
 
 # Deployment
 
-> For automated ARM deployment, see the end of this section
+> [Automated ARM deployment](#automated-arm-deployment) is also available
 
 ## Deploy Azure Resources
 Create the following resources using the [Azure Portal](https://portal.azure.com/), [PowerShell](https://docs.microsoft.com/en-us/powershell/azure/install-azurerm-ps?view=azurermps-3.8.0), or [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli).
 > Unless otherwise noted, use any configuration and scale parameters you like
-* Azure Storage
-* DocumentDB (*without* Mongo)
-* Azure SQL (*with* AdventureWorksLT sample DB)
-* Azure Search
-* Azure App Service
-* Bing Speech API key
-* Language Understanding Intelligent Service (LUIS) key
+* `Azure Storage`
+* `DocumentDB` (*without* Mongo)
+* `Azure SQL` (*with* AdventureWorksLT sample DB)
+* `Azure Search`
+* `Azure App Service`
+* `Bing Speech API` key
+* `Language Understanding Intelligent Service (LUIS)` key
 
 ## Configure Azure Resources
 
@@ -117,12 +118,12 @@ Create the following application settings on your Web App:
 | STORE_DDB_COLLECTION | bot-sessions |
 
 ### Deploy bot to Azure App Service
-After building the project (see above), upload the contents of `dist` to your App Service
+After building the project (see [build](#build)), upload the contents of `dist` to your App Service
 > Learn how to upload files to a web app using [FTP and PowerShell](https://docs.microsoft.com/en-us/azure/app-service-web/scripts/app-service-powershell-deploy-ftp)
 
 ## Automated ARM Deployment
 To automatically create, configure, and deploy all Azure resources at once, run the following commands in PowerShell (or use your favorite ARM deployment tool):
-> You will be prompted for **four** configuration parameters. See manual notes above if you need help finding the correct values.
+> You will be prompted for **four** configuration parameters. See [configuration](#configure-azure-resources) if you need help finding the correct values.
 ```PowerShell
 $rg = "call-center"
 $loc = "eastus"
@@ -318,3 +319,28 @@ FROM
 > See the full view with more custom functions in this repo under `./data/sql`
 
 Azure Search executes this view when it indexes (and periodically re-indexes) the product database.
+
+# Copyright
+©2017 Microsoft Corporation. All rights reserved. This information is provided "as-is" and may change without notice. Microsoft makes no warranties, express or implied, with respect to the information provided here. Third party data was used to generate the solution. You are responsible for respecting the rights of others, including procuring and complying with relevant licenses in order to create similar datasets.
+
+# License
+The MIT License (MIT)
+Copyright (c) 2017 Microsoft Corporation
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
