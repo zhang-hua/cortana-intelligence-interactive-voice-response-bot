@@ -1,0 +1,30 @@
+{
+	"Name": "Colors",
+	"SubLists": 
+	[
+		{
+			"CanonicalForm": "Black",
+			"List": [ "Black" ]
+		},
+		{
+			"CanonicalForm": "Silver",
+			"List": [ "Silver" ]
+		},
+    {
+			"CanonicalForm": "Yellow",
+			"List": [ "Yellow" ]
+		},
+    {
+			"CanonicalForm": "Blue",
+			"List": [ "Blue" ]
+		},
+    {
+			"CanonicalForm": "Red",
+			"List": [ "Red" ]
+		},
+    {
+			"CanonicalForm": "White",
+			"List": [ "White" ]
+		}
+	]
+}

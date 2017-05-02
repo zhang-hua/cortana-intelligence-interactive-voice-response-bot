@@ -1,0 +1,399 @@
+{
+  "luis_schema_version": "2.0.0",
+  "versionId": "0.1",
+  "name": "AdventureWorks",
+  "desc": "",
+  "culture": "en-us",
+  "intents": [
+    {
+      "name": "intent.order.create"
+    },
+    {
+      "name": "intent.order.status"
+    },
+    {
+      "name": "None"
+    }
+  ],
+  "entities": [
+    {
+      "name": "product"
+    }
+  ],
+  "composites": [],
+  "closedLists": [
+    {
+      "name": "Categories",
+      "subLists": [
+        {
+          "canonicalForm": "components",
+          "list": [
+            "components"
+          ]
+        },
+        {
+          "canonicalForm": "accessories",
+          "list": [
+            "accessories"
+          ]
+        },
+        {
+          "canonicalForm": "tires and tubes",
+          "list": [
+            "tires",
+            "tubes",
+            "tire",
+            "tube"
+          ]
+        },
+        {
+          "canonicalForm": "saddles",
+          "list": [
+            "saddles",
+            "saddle",
+            "seat"
+          ]
+        },
+        {
+          "canonicalForm": "handlebars",
+          "list": [
+            "handlebars",
+            "handlebar"
+          ]
+        },
+        {
+          "canonicalForm": "clothing",
+          "list": [
+            "clothing",
+            "clothes"
+          ]
+        },
+        {
+          "canonicalForm": "pedals",
+          "list": [
+            "pedals",
+            "pedal"
+          ]
+        },
+        {
+          "canonicalForm": "road bikes",
+          "list": [
+            "road bikes",
+            "road bike"
+          ]
+        },
+        {
+          "canonicalForm": "bottles and cages",
+          "list": [
+            "bottles",
+            "cages",
+            "bottle",
+            "cage"
+          ]
+        },
+        {
+          "canonicalForm": "bottom brackets",
+          "list": [
+            "bottom brackets",
+            "bottom bracket",
+            "bracket",
+            "brackets"
+          ]
+        },
+        {
+          "canonicalForm": "cranksets",
+          "list": [
+            "cranksets",
+            "crankset"
+          ]
+        },
+        {
+          "canonicalForm": "mountain bikes",
+          "list": [
+            "mountain bikes",
+            "mountain bike"
+          ]
+        },
+        {
+          "canonicalForm": "mountain frames",
+          "list": [
+            "mountain frames",
+            "mountain frame"
+          ]
+        },
+        {
+          "canonicalForm": "road frames",
+          "list": [
+            "road frames",
+            "road frame"
+          ]
+        },
+        {
+          "canonicalForm": "touring bikes",
+          "list": [
+            "touring bikes",
+            "touring bike"
+          ]
+        },
+        {
+          "canonicalForm": "brakes",
+          "list": [
+            "brakes",
+            "brake"
+          ]
+        },
+        {
+          "canonicalForm": "derailleurs",
+          "list": [
+            "derailleurs",
+            "derailleur"
+          ]
+        },
+        {
+          "canonicalForm": "jerseys",
+          "list": [
+            "jerseys",
+            "jersey"
+          ]
+        },
+        {
+          "canonicalForm": "touring frames",
+          "list": [
+            "touring frames",
+            "touring frame"
+          ]
+        },
+        {
+          "canonicalForm": "bike racks",
+          "list": [
+            "bike racks",
+            "bike rack",
+            "rack"
+          ]
+        },
+        {
+          "canonicalForm": "bike stands",
+          "list": [
+            "bike stands",
+            "bike stand",
+            "stand"
+          ]
+        },
+        {
+          "canonicalForm": "caps",
+          "list": [
+            "caps",
+            "cap",
+            "hats",
+            "hat"
+          ]
+        },
+        {
+          "canonicalForm": "chains",
+          "list": [
+            "chains",
+            "chain"
+          ]
+        },
+        {
+          "canonicalForm": "cleaners",
+          "list": [
+            "cleaners",
+            "cleaner",
+            "cleaning"
+          ]
+        },
+        {
+          "canonicalForm": "fenders",
+          "list": [
+            "fenders",
+            "fender"
+          ]
+        },
+        {
+          "canonicalForm": "gloves",
+          "list": [
+            "gloves",
+            "glove"
+          ]
+        },
+        {
+          "canonicalForm": "helmets",
+          "list": [
+            "helmets",
+            "helmet"
+          ]
+        },
+        {
+          "canonicalForm": "hydration packs",
+          "list": [
+            "hydration packs",
+            "hydration pack"
+          ]
+        },
+        {
+          "canonicalForm": "shorts",
+          "list": [
+            "shorts"
+          ]
+        },
+        {
+          "canonicalForm": "socks",
+          "list": [
+            "socks"
+          ]
+        },
+        {
+          "canonicalForm": "vests",
+          "list": [
+            "vests",
+            "vest"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Colors",
+      "subLists": [
+        {
+          "canonicalForm": "black",
+          "list": [
+            "black"
+          ]
+        },
+        {
+          "canonicalForm": "silver",
+          "list": [
+            "silver"
+          ]
+        },
+        {
+          "canonicalForm": "yellow",
+          "list": [
+            "yellow"
+          ]
+        },
+        {
+          "canonicalForm": "blue",
+          "list": [
+            "blue"
+          ]
+        },
+        {
+          "canonicalForm": "red",
+          "list": [
+            "red"
+          ]
+        },
+        {
+          "canonicalForm": "white",
+          "list": [
+            "white"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Sex",
+      "subLists": [
+        {
+          "canonicalForm": "woman",
+          "list": [
+            "woman",
+            "women",
+            "women's",
+            "lady's",
+            "ladies",
+            "female",
+            "feminine",
+            "girls",
+            "girl's"
+          ]
+        },
+        {
+          "canonicalForm": "man",
+          "list": [
+            "man",
+            "men",
+            "men's",
+            "guy",
+            "guy's",
+            "masculine",
+            "boy",
+            "boy's"
+          ]
+        },
+        {
+          "canonicalForm": "unisex",
+          "list": [
+            "unisex",
+            "any gender"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Sizes",
+      "subLists": [
+        {
+          "canonicalForm": "small",
+          "list": [
+            "small"
+          ]
+        },
+        {
+          "canonicalForm": "medium",
+          "list": [
+            "medium"
+          ]
+        },
+        {
+          "canonicalForm": "large",
+          "list": [
+            "large"
+          ]
+        },
+        {
+          "canonicalForm": "extra large",
+          "list": [
+            "extra large"
+          ]
+        }
+      ]
+    }
+  ],
+  "bing_entities": [
+    "number"
+  ],
+  "actions": [],
+  "model_features": [],
+  "regex_features": [],
+  "utterances": [
+    {
+      "text": "blue",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "red mountain bike",
+      "intent": "None",
+      "entities": [
+        {
+          "entity": "product",
+          "startPos": 4,
+          "endPos": 11
+        }
+      ]
+    },
+    {
+      "text": "i want to create an order",
+      "intent": "intent.order.create",
+      "entities": []
+    },
+    {
+      "text": "what is the status of my order",
+      "intent": "intent.order.status",
+      "entities": []
+    }
+  ]
+}

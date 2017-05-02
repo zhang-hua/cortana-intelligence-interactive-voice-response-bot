@@ -1,0 +1,22 @@
+{
+	"name": "Sizes",
+	"sublists": 
+	[
+		{
+			"canonicalForm": "Small",
+			"list": [ "Small" ]
+		},
+		{
+			"canonicalForm": "Medium",
+			"list": [ "Medium" ]
+		},
+    {
+			"canonicalForm": "Large",
+			"list": [ "Large" ]
+		},
+    {
+			"canonicalForm": "Extra Large",
+			"list": [ "Extra Large" ]
+		}
+	]
+}

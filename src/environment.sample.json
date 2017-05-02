@@ -1,0 +1,30 @@
+// populate and copy this file to ./dist/environment.json
+// or define all keys as OS environment variables
+{
+  "CALLBACK_URL": "",
+  "MICROSOFT_APP_ID": "",
+  "MICROSOFT_APP_PASSWORD": "",
+  "port": 3001,
+  "LUIS_REGION": "",
+  "LUIS_APP_ID": "",
+  "LUIS_KEY": "",
+  "LUIS_MANAGER_KEY": "",
+  "SPEECH_KEY": "",
+  "SPEECH_ENDPOINT": "",
+  "SPEECH_REGION": null,
+  "SEARCH_SERVICE": "",
+  "SEARCH_KEY": "",
+  "BLOB_ACCOUNT": "",
+  "BLOB_KEY": "",
+  "DDB_URL": "",
+  "DDB_KEY": "",
+  "SQL_HOST": "",
+  "SQL_USER": "",
+  "SQL_PASSWORD": "",
+  "SQL_DATABASE": "",
+  "LOG_BLOB_CONTAINER": "",
+  "LOG_DDB_DATABASE": "",
+  "LOG_DDB_COLLECTION": "",
+  "STORE_DDB_DATABASE": "",
+  "STORE_DDB_COLLECTION": ""
+}
