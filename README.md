@@ -66,7 +66,7 @@ Create the following resources using the [Azure Portal](https://portal.azure.com
 Create the following application settings on your Web App:
 > Learn how to configure a site's [App Settings](https://docs.microsoft.com/en-us/azure/app-service-web/web-sites-configure) using the Azure Portal
 > 
-> You can find all resource keys and names using the Azure Portal, with the exception of the LUIS Programmatic Key, which must be copied from the [LUIS Portal](https://www.luis.ai/).
+> You can find all required resource keys and names (below, in **bold**) using the Azure Portal, with the exception of the LUIS Programmatic Key, which must be copied from the [LUIS Portal](https://www.luis.ai/).
 
 | NAME | VALUE |
 | ---- | ----- |
@@ -126,7 +126,7 @@ Using your Skype client, initiate a call to your bot and follow the prompts. You
 1. "bicycle for road use"
 1. "extra large jersey": general product category with specific size
 
-# Scale
+# Scaling
 A basic deployment will scale to around 10 concurrent requests per second. Each layer of the architecture supports a separate level of concurrency, but the entire solution is bound by the narrowest pipeline of all the services. Services may be scaled **up** to support higher throughput per resource, or scaled **out** to spread throughput across multiple resources.
 
 | SERVICE | MAX RPS PER INSTANCE | SCALE UP | SCALE OUT |
@@ -138,14 +138,164 @@ A basic deployment will scale to around 10 concurrent requests per second. Each 
 | DocumentDB | ~10K | N/A | Add partitioning |
 | Blobs | ~20K | N/A | N/A |
 
-> **CUSTOM ACCOUNT PARTITIONING**: Per-service scale-out configuration of Bing Speech and LUIS is not available, so custom sharding/partitioning of Bing Speech and LUIS APIs must be implemented in order to distribute load between multiple accounts. In order to achieve this, either implement a round-robin state-tracker within the bot app, or apply hash-based routing from the caller's userID.
+> **CUSTOM ACCOUNT PARTITIONING**: Per-service scale-out configuration of Bing Speech and LUIS is not available, so custom sharding/partitioning of Bing Speech and LUIS APIs must be implemented in order to distribute load between multiple accounts. To achieve this, modify the bot app to either implement round-robin service requests, or apply hash-based routing based on the caller's userID.
 
 # Customization
-High level guide to making changes
+This bot is tuned end-to-end to work specifically with the AdeventureWorks sample product database. In order to transition to a custom data set, some consideration must be taken to account for the format and structure of your custom data and how best to apply best practices for LUIS and Azure Search.
 
-## Data Wrangling
-Source content is not often in an ideal raw state for consumption by bots and search applications.
-This section will use the sample AventureWorks dataset to describe common preprocessing transformation steps that can be applied to source content.
+## Identify custom entities (LUIS)
+Every domain has a different set of common entities. An entity represents a class of similar objects that are detected from raw text by LUIS. There are three main types of entity: prebuilt (cross-domain, provided by Bing), custom (learned from your labeled data), and closed-list (a static set of terms). This app uses only closed-list entities across four classes: `color`, `category`, `sex`, and `size`.
 
-## Synonym Mapping
-TBD
+Your goal when building and training custom entities should be to identifiy object classes that can be used by the search engine to boost results for the specified class.
+
+## Using entities with search (LUIS & Azure Search)
+There are two approaches to using entities with search: `filtering` and `boosting`. By applying a filter, you eliminate results that do not match the entity metadata. By applying a boost, you surface matching entities to the top of the result set, but you also return non-matches, albeit with a lower score. Use a `filter` when the entity represents a broad category, or if the entity is the *only* text in the utterance. Use a `boost` when the entity is more fine-grained, or, when included with other terms, may produce 0 results.
+
+Consider the following response from LUIS:
+```JSON
+{
+  "query": "red bicycle",
+  "entities": [
+    {
+      "entity": "red",
+      "type": "colors",
+      "startIndex": 0,
+      "endIndex": 2,
+      "resolution": { "values": [ "red" ] }
+    }
+  ]
+}
+```
+
+Apply a search filter to return only matches for `red bicycle` where the color field is `red`:
+```
+<url>?search=red bicycle&$filter=colors/any(x: x eq 'red')
+```
+
+Or apply a boost to raise the score for the same documents (typically bringing matches to the top of the result set) *while still including other colors as well* (e.g. if `red` was not available):
+```
+<url>?red bicycle colors:red^2
+```
+
+> Learn more about [advanced query operators in Azure Search](https://azure.microsoft.com/en-us/blog/lucene-query-language-in-azure-search/)
+
+## Identify common synonyms (Azure Search)
+Use custom analyzers in Azure Search to enable content matching against domain-specific synonyms, or to bridge the gap between a product's written form and its spoken form. For instance, product sizes are represented in the database as `S`, `M`, `L`, and `XL`, however, when speaking, we refer to `small`, `medium`, `large`, and `extra large`. Use one or more `#Microsoft.Azure.Search.SynonymTokenFilter`s to enable matching between these different forms.
+
+> Learn more about [creating custom analyzers in Azure Search](https://docs.microsoft.com/en-us/rest/api/searchservice/custom-analyzers-in-azure-search)
+
+This app uses three synonym groups, so no matter how a product or attribute is spoken, it will find a match in the search index:
+
+### Size
+```JSON
+[
+  "S,small",
+  "M,medium",
+  "XL,extra large",
+  "L,large"
+]
+```
+
+### Product
+```JSON
+[
+  "bike=>bicycle",
+  "lady,girl=>woman",
+  "guy,boy=>man",
+  "clothes=>clothing",
+  "hat=>cap"
+]
+```
+
+### Sex
+```JSON
+[
+  "lady,girl=>woman",
+  "guy,boy=>man"
+]
+```
+
+> Azure Search now supports [query-time synonym maps in public preview](https://azure.microsoft.com/en-us/blog/azure-search-synonyms-public-preview/).
+
+## Data Wrangling (SQL Server)
+Source content often is not in an ideal state for consumption by bots and search applications.
+This section describes common preprocessing transformations that can be applied to source content.
+
+### Connect to a Table or a View?
+Azure Search offers a configurable `Azure SQL indexer` for no-code, automated ingest of your source content, given the name of a `table` or `view` in your database. For simple data sets, a `table` works well, but for most applications, you will want to connect to a custom `view` to account for SQL joins, predicates, and other custom result processing.
+> Learn more about connecting [Azure Search and Azure SQL](https://docs.microsoft.com/en-us/azure/search/search-howto-connecting-azure-sql-database-to-azure-search-using-indexers)
+
+### Defining a search "document"
+Search documents, by nature, are denormalized (unjoined). Azure Search does not support joins, so all of the information describing a result must be attached to a single document. To achieve a high level of usability, it is critical to apply a proper denormalization strategy against your normalized (table-joined) data. Consider the following two AdventureWorks tables. Both contain product names, but the latter is has many repeated sections, varying only by a single attribute.
+
+#### SalesLT.ProductModel
+| Name |
+| ---- |
+| HL Road Frame |
+| LL Road Frame |
+| ML Road Frame |
+| ML Road Frame-W |
+
+#### SalesLT.Product
+| Name |
+| ---- |
+| HL Road Frame - Black, 44 |
+| HL Road Frame - Black, 48 |
+| HL Road Frame - Black, 52 |
+| HL Road Frame - Black, 58 |
+| HL Road Frame - Black, 62 |
+| HL Road Frame - Red, 44 |
+| HL Road Frame - Red, 48 |
+| HL Road Frame - Red, 52 |
+| HL Road Frame - Red, 56 |
+| HL Road Frame - Red, 58 |
+| HL Road Frame - Red, 62 |
+| ... and so on, for LL, ML, and ML-W, etc. |
+
+If we envision each table row as a search result, it's clear that the second table will overwhelm and end user with mostly-duplicated results and lead to a poor user experience. However, the first table lacks valuable product information needed to identify a specific product SKU.
+
+The solution is to **collapse** the information from the second table onto the first using a custom `view` and a handful of `user-defined functions`.
+
+> Other ETL techniques may be used to massage your content. This example uses functions.
+
+Azure Search supports the `Collection(Edm.String)` document type for storing semi-complex, searchable metadata on a document. In this case, we will define two collections: one for `color` and one for `size`. Both of these product attributes should be searchable, but, because they are attached to a parent document, they will not return a new document for every possible combination.
+
+In order to properly prepare the values for Azure Search, we must coerce them into a JSON string. As of this writing, there is no built-in SQL functionality to achieve this, but we can apply the SQL `coalesce` operator inside a custom function to build the string:
+```sql
+CREATE FUNCTION ufnGetColorsJson(@productModelId int)
+RETURNS nvarchar(max)
+AS 
+BEGIN
+  DECLARE @vals AS nvarchar(max)
+  SELECT
+    @vals = coalesce(@vals + ',"', '"') + [t].[color] + '"'
+  FROM
+    (
+      SELECT
+        DISTINCT [color]
+      FROM
+        [SalesLt].[Product] [p]
+      WHERE
+        [p].[productModelId]=@productModelId
+    ) [t]
+  RETURN lower('[' + @vals + ']')
+END
+```
+
+Then we create a new `view` to return the denormalized representation of our data:
+```sql
+CREATE VIEW [SalesLT].[vProductsForSearch]
+AS
+SELECT
+  [pm].[name],
+  [pm].[productModelId],
+  [pm].[modifiedDate],
+  (SELECT dbo.ufnGetColorsJson([productModelId])) [colors],
+  (SELECT dbo.ufnGetSizesJson([productModelId])) [sizes]
+FROM
+  [SalesLt].[ProductModel] [pm]
+```
+
+> See the full view with more custom functions in this repo under `./data/sql`
+
+Azure Search executes this view when it indexes (and periodically re-indexes) the product database.
