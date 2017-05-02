@@ -3,7 +3,26 @@
 * Project: Call-Center Automation (Solution How-to Guide)
 * Use case: Provide an Interactive Voice Response (IVR) bot to process product orders for a fictious company that sells bicycles and bicycle accessories.
 
-## Platforms
+## Table of Contents
+
+<!-- toc -->
+- [Platforms](#platforms)
+- [Build](#build)
+- [Deployment](#deployment)
+  * [Deploy Azure Resources](#deploy-azure-resources)
+  * [Configure Azure Resources](#configure-azure-resources)
+  * [Automated ARM Deployment](#automated-arm-deployment)
+- [Usage](#usage)
+- [Scaling](#scaling)
+- [Customization](#customization)
+  * [Identify custom entities (LUIS)](#identify-custom-entities-luis)
+  * [Using entities with search (LUIS & Azure Search)](#using-entities-with-search-luis--azure-search)
+  * [Identify common synonyms (Azure Search)](#identify-common-synonyms-azure-search)
+  * [Data Wrangling (SQL Server)](#data-wrangling-sql-server)
+
+<!-- tocstop -->
+
+# Platforms
 * [Bot Framework](https://docs.botframework.com/en-us/skype/calling/) with [Skype Calling](https://docs.botframework.com/en-us/skype/calling/) channel  
 Routes calls to the bot
 * [Bing Speech Service](https://docs.microsoft.com/en-us/azure/cognitive-services/speech/home)  
