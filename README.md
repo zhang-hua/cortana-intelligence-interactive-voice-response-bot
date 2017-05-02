@@ -36,6 +36,8 @@ To run unit tests, run `npm test`
 
 # Deployment
 
+> For automated ARM deployment, see the end of this section
+
 ## Deploy Azure Resources
 Create the following resources using the [Azure Portal](https://portal.azure.com/), [PowerShell](https://docs.microsoft.com/en-us/powershell/azure/install-azurerm-ps?view=azurermps-3.8.0), or [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli).
 > Unless otherwise noted, use any configuration and scale parameters you like
@@ -52,41 +54,19 @@ Create the following resources using the [Azure Portal](https://portal.azure.com
 ### Register your bot
 1. Register a new bot at the [Bot Framework Portal](https://dev.botframework.com/bots/new)
 1. Create a new Microsoft App, and make note of its **ID** and **Secret**
-1. Your messaging endpoint is `https://YOUR_WEB_APP.azurewebsites.net/api/messages`
+1. Leave the messaging endpoint blank for now
 1. After your bot is registered, click through to its Skype Channel and ensure that **Skype Calling is enabled**. Your calling endpoint is `https://YOUR_WEB_APP.azurewebsites.net/api/calling`
 
-### Deploy LUIS Model
+### Find your LUIS programmatic key
 1. Log in to the [LUIS Portal](https://www.luis.ai/)
-1. Import an app using the GUI. The pre-configured LUIS app can be found in this repo at `/data/luis/AdventureWorks.json`
-1. Using the LUIS Portal, **train** the application
-1. Using the LUIS Portal, assign the **LUIS key** you create earlier
-1. Using the LUIS Portal, **publish** the application
-1. Make note of the published **endpoint** URL
-
-### Azure SQL configuration
-Execute the following scripts, available under `/data/sql`.
-
-> Use [SQL Server Management Studio](https://docs.microsoft.com/en-us/sql/ssms/use-sql-server-management-studio) to connect to your Azure SQL database and execute the following scripts.
-
-1. `functions/ufnGetCategory.sql`
-1. `functions/ufnGetColorsJson.sql`
-1. `functions/ufnGetDescription.sql`
-1. `functions/ufnGetProductAttributes.sql`
-1. `functions/ufnGetSizesJson.sql`
-1. `functions/ufnIsDeleted.sql`
-1. `views/vProductsForSearch.sql`
-
-### Azure Search configuration
-> Use your favorite REST client to create search resources using the [Azure Search REST API](https://docs.microsoft.com/en-us/rest/api/searchservice/create-data-source).
-1. Create a new **search index** on your Search Account using the schema definition at `/data/search/schema.json`
-1. Copy your Azure SQL **connection string** to `/data/search/datasource.json`
-1. Create a new **search datasource** on your Search Account using the datasource definition at `/data/search/datasource.json`
-1. Create a new **search indexer** on your Search Account using the indexer definition at `/data/search/indexer.json`
-1. Run the indexer at least once to populate the index
+1. Navigate to the `My Keys` tab
+1. Make a note of your `Programmatic API Key`
 
 ### Azure App Service Application Settings
 Create the following application settings on your Web App:
 > Learn how to configure a site's [App Settings](https://docs.microsoft.com/en-us/azure/app-service-web/web-sites-configure) using the Azure Portal
+> 
+> You can find all resource keys and names using the Azure Portal, with the exception of the LUIS Programmatic Key, which must be copied from the [LUIS Portal](https://www.luis.ai/).
 
 | NAME | VALUE |
 | ---- | ----- |
@@ -96,7 +76,8 @@ Create the following application settings on your Web App:
 | MICROSOFT_APP_PASSWORD | **YOUR_APP_SECRET** |
 | LUIS_REGION | westus (or your region, if different) |
 | LUIS_KEY | **YOUR_LUIS_KEY** |
-| LUIS_MANAGEMENT_KEY | **YOUR_LUIS_PROGRAMATIC_KEY** |
+| LUIS_MANAGER_KEY | **YOUR_LUIS_PROGRAMATIC_KEY** |
+| LUIS_APP_ID | (empty) |
 | SPEECH_KEY | **YOUR_SPEECH_KEY** |
 | SPEECH_ENDPOINT | https://speech.platform.bing.com/recognize |
 | SPEECH_REGION | (empty) |
@@ -120,7 +101,15 @@ Create the following application settings on your Web App:
 After building the project (see above), upload the contents of `dist` to your App Service
 > Learn how to upload files to a web app using [FTP and PowerShell](https://docs.microsoft.com/en-us/azure/app-service-web/scripts/app-service-powershell-deploy-ftp)
 
-> Or [enable the App Service app repository](https://docs.microsoft.com/en-us/azure/app-service-web/app-service-deploy-local-git#a-namestep3astep-3-enable-the-app-service-app-repository) for continous-integration deployment. If you opt for app-repo CI, be sure to either change the root app directory from `site\wwwroot` to `site\wwwroot\dist` (under App Settings in the Portal) or change the value of `outDir` in tsconfig.json to an empty string (and be sure to commit tsconfig.json back to your local git repo before pushing to Azure).
+## Automated ARM Deployment
+To automatically create, configure, and deploy all Azure resources at once, run the following commands in PowerShell (or use your favorite ARM deployment tool):
+> You will be prompted for **four** configuration parameters. See manual notes above if you need help finding the correct values.
+```PowerShell
+$rg = "call-center"
+$loc = "eastus"
+New-AzureRmResourceGroup $rg $loc
+New-AzureRmResourceGroupDeployment -Name CallCenterSolution -ResourceGroupName $rg -TemplateFile .\azuredeploy.json
+```
 
 # Usage
 Before talking to your bot, you must add it to your Skype contacts list. You can find a link to add your bot to Skype on the [Bot Portal](https://dev.botframework.com/) under the channel listing.
