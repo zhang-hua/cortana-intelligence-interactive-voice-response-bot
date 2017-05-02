@@ -120,6 +120,8 @@ Create the following application settings on your Web App:
 ### Deploy bot to Azure App Service
 After building the project (see [build](#build)), upload the contents of `dist` to your App Service
 > Learn how to upload files to a web app using [FTP and PowerShell](https://docs.microsoft.com/en-us/azure/app-service-web/scripts/app-service-powershell-deploy-ftp)
+>
+> You can also deploy from the command line using [WebDeploy](https://azure.microsoft.com/en-us/blog/simple-azure-websites-deployment/)
 
 ## Automated ARM Deployment
 To automatically create, configure, and deploy all Azure resources at once, run the following commands in PowerShell (or use your favorite ARM deployment tool):
