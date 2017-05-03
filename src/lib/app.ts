@@ -53,25 +53,38 @@ class App {
   }
 
   getSkuChoices(args: ProductSkuSelection): ProductSku[] {
+
+    // map entities to selected attributes
     args.entities
       .map((x) => {
-        return { mapping: _.find(SEARCH_SETTINGS.entities, {entity: x.type}), entity: x };
+        return {
+          // entity detected by luis
+          entity: x,
+
+          // map to search and sku fields
+          mapping: _.find(SEARCH_SETTINGS.entities, {entity: x.type}),
+        };
       })
+
+      // omit entities with no map
       .filter((x) => x.mapping && x.mapping.sku)
+
+      // set attribute selection for entity
       .forEach((x) => {
-        const canonical = _.keys(x.entity.resolution)[0].toLowerCase();
-        const filtered = _.filter(args.skus, (sku) => sku[x.mapping.sku].toLowerCase() === canonical);
-        if (filtered.length > 0) {
-          args.skus = filtered;
-        }
+        const canonical = x.entity.resolution.values[0].toLowerCase();
+        args.selected[x.mapping.sku] = canonical;
       });
-    _.each(args.selected, (v, k) => {
-      args.skus = args.skus.filter((x) => x[k] === v);
+
+    // limit skus to selected attributes
+    _.each(args.selected, (value, attribute) => {
+      args.skus = args.skus.filter((sku) => sku[attribute].toLowerCase() === value);
     });
     return args.skus;
   }
 
   getNextSkuAttribute(skus: ProductSku[]): {name: string, choices: string[]} {
+
+    // TODO handle 0 skus
     const sets = skus.reduce((m, c) => {
       Object.keys(c)
         .filter((x) => x !== 'productNumber')
