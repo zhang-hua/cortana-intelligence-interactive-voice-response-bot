@@ -23,7 +23,8 @@ export default function createBot(connector: ICallConnector, botStorage?: IBotSt
   BOT_SETTINGS.storage = botStorage || BOT_STORAGE;
   const bot = new UniversalCallBot(connector, BOT_SETTINGS);
   bot.library(BOT_SPEECH);
-  bot.use(new BotCallRecorder({rootDir: path.resolve(__dirname, '../../spec/data/bot/test-1')}));
+  // bot.use(new BotCallRecorder({rootDir: path.resolve(__dirname, '../../spec/data/bot/test-1')}).middleware);
+  bot.on('error', console.error);
 
   /**
    * DIALOG
@@ -58,11 +59,6 @@ export default function createBot(connector: ICallConnector, botStorage?: IBotSt
         if (err) {
           return session.error(err);
         }
-
-        const speech = args.response.speech;
-        const luis = args.response.language;
-
-        session.endDialog(`You said ${speech.header.name}, with intent ${luis.topScoringIntent.intent} and ${luis.entities.length} entities`);
 
         session.dialogData.luis = args.response.language;
 
@@ -135,7 +131,12 @@ export default function createBot(connector: ICallConnector, botStorage?: IBotSt
     (session: CallSession, choice: IPromptChoiceResult, next) => {
       const skuData: ProductSkuSelection = session.dialogData.args;
       skuData.selected[skuData.attribute] = choice.response.entity;
-      session.beginDialog('/chooseProductSKU', skuData);
+      if (choice.error) {
+        console.error(choice.error);
+        session.endDialogWithResult({error: choice.error, resumed: ResumeReason.canceled});
+      } else {
+        session.beginDialog('/chooseProductSKU', skuData);
+      }
     },
   ]);
 
