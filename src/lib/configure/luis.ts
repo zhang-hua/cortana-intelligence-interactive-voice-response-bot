@@ -10,7 +10,6 @@ import { LUIS, LUIS_MANAGER } from '../services';
 const ERROR_APP_EXISTS = 'An application with the same name already exists';
 
 export default function(callback: Callback) {
-  console.log('configuring luis');
   const appPath = path.resolve(__dirname, '../../data/luis/AdventureWorks.json');
   async.waterfall([
     async.apply(fs.readFile, appPath, 'utf8'),
@@ -22,9 +21,8 @@ export default function(callback: Callback) {
 
 function publish(appId: string, callback: Callback): void {
   const envPath = path.resolve(__dirname, '../../environment.json');
-  process.env.LUIS_APP_ID = appId;
   async.waterfall([
-    (resp: any, next: any) => LUIS_MANAGER.addSubscriptionKey("ciqs", LUIS_MANAGER_SETTINGS.endPointKey, next),
+    (next: any) => LUIS_MANAGER.addSubscriptionKey("ciqs", LUIS_MANAGER_SETTINGS.endPointKey, next),
     (resp: any, next: any) => LUIS_MANAGER.assignAppKey(appId, LUIS_MANAGER_SETTINGS.appVersion, LUIS_MANAGER_SETTINGS.endPointKey, next),
     (resp: any, next: any) => LUIS_MANAGER.publishApp(appId, { versionId: LUIS_MANAGER_SETTINGS.appVersion, isStaging: false }, next),
     (resp: any, next: any) => fs.readFile(envPath, 'utf8', continueOnNotExists(next)),

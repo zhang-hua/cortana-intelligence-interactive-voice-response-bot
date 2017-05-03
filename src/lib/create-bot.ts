@@ -1,9 +1,11 @@
+import path = require('path');
 import { SearchResultDocument } from 'azure-search-client';
 import {
   CallSession, IBotStorage, ICallConnector,
   IDialogResult, IPromptChoiceResult, Prompts,
   ResumeReason, UniversalCallBot } from 'botbuilder-calling';
 import { IUnderstandResult, SpeechDialog } from 'botbuilder-calling-speech';
+import { BotCallRecorder } from 'botbuilder-calling-test';
 import { LuisResult } from "cognitive-luis-client";
 import { APP, ProductSkuSelection } from './app';
 import { BOT_SETTINGS } from './config';
@@ -21,6 +23,7 @@ export default function createBot(connector: ICallConnector, botStorage?: IBotSt
   BOT_SETTINGS.storage = botStorage || BOT_STORAGE;
   const bot = new UniversalCallBot(connector, BOT_SETTINGS);
   bot.library(BOT_SPEECH);
+  bot.use(new BotCallRecorder({rootDir: path.resolve(__dirname, '../../spec/data/bot/test-1')}));
 
   /**
    * DIALOG
