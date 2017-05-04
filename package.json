@@ -42,7 +42,7 @@
     "botbuilder-calling": "^3.0.1",
     "botbuilder-calling-speech": "^1.0.8",
     "botbuilder-calling-test": "^1.0.8",
-    "botbuilder-logging": "^1.1.2",
+    "botbuilder-logging": "^1.1.3",
     "botbuilder-storage-documentdb": "^1.3.8",
     "cognitive-luis-client": "^1.0.18",
     "cognitive-speech-client": "^1.1.7",
