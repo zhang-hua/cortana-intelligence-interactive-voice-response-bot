@@ -79,14 +79,14 @@ Create the following resources using the [Azure Portal](https://portal.azure.com
 1. Leave the messaging endpoint blank for now
 1. After your bot is registered, click through to its Skype Channel and ensure that **Skype Calling is enabled**. Your calling endpoint is `https://YOUR_WEB_APP.azurewebsites.net/api/calling`
 
-> See guided screenshots of [bot registration](./docs/Bot-Registration.md) and [enabling Skype Calling](./docs/Enable-Skype-Calling.md)
+> See guided screenshots for [bot registration](./docs/Bot-Registration.md) and [enabling Skype Calling](./docs/Enable-Skype-Calling.md)
 
 ### Find your LUIS programmatic key
 1. Log in to the [LUIS Portal](https://www.luis.ai/)
 1. Navigate to the `My Keys` tab
 1. Make a note of your `Programmatic API Key`
 
-> See guided screenshots of finding the [LUIS programmatic key](./docs/LUIS-Programmatic-Key.md)
+> See guided screenshots for finding the [LUIS programmatic key](./docs/LUIS-Programmatic-Key.md)
 
 ### Azure App Service Application Settings
 Create the following application settings on your Web App:
