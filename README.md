@@ -1,7 +1,7 @@
 # About this repo
 * Maintainer: Chris Stone (chstone@microsoft.com)
 * Project: Call-Center Automation (Solution How-to Guide)
-* Use case: Provide an Interactive Voice Response (IVR) bot to process product orders for a fictious company that sells bicycles and bicycle accessories.
+* Use case: Provide an Interactive Voice Response (IVR) bot to process product orders for a fictitious company that sells bicycles and bicycle accessories.
 
 ## Table of Contents
 
@@ -168,7 +168,7 @@ This bot is tuned end-to-end to work specifically with the AdeventureWorks sampl
 ## Identify custom entities (LUIS)
 Every domain has a different set of common entities. An entity represents a class of similar objects that are detected from raw text by LUIS. There are three main types of entity: prebuilt (cross-domain, provided by Bing), custom (learned from your labeled data), and closed-list (a static set of terms). This app uses only closed-list entities across four classes: `color`, `category`, `sex`, and `size`.
 
-Your goal when building and training custom entities should be to identifiy object classes that can be used by the search engine to boost results for the specified class.
+Your goal when building and training custom entities should be to identify object classes that can be used by the search engine to boost results for the specified class.
 
 ## Using entities with search (LUIS & Azure Search)
 There are two approaches to using entities with search: `filtering` and `boosting`. By applying a filter, you eliminate results that do not match the entity metadata. By applying a boost, you surface matching entities to the top of the result set, but you also return non-matches, albeit with a lower score. Use a `filter` when the entity represents a broad category, or if the entity is the *only* text in the utterance. Use a `boost` when the entity is more fine-grained, or, when included with other terms, may produce 0 results.
@@ -274,7 +274,7 @@ Search documents, by nature, are denormalized (unjoined). Azure Search does not 
 | HL Road Frame - Red, 62 |
 | ... and so on, for LL, ML, and ML-W, etc. |
 
-If we envision each table row as a search result, it's clear that the second table will overwhelm and end user with mostly-duplicated results and lead to a poor user experience. However, the first table lacks valuable product information needed to identify a specific product SKU.
+If we envision each table row as a search result, it is clear that the second table will overwhelm an end user with mostly-duplicated results and lead to a poor user experience. However, the first table lacks valuable product information needed to identify a specific product SKU.
 
 The solution is to **collapse** the information from the second table onto the first using a custom `view` and a handful of `user-defined functions`.
 
