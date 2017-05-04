@@ -6,7 +6,7 @@
 ## Table of Contents
 
 <!-- toc -->
-- [Platforms](#platforms)
+- [Architecture](#architecture)
 - [Build](#build)
 - [Deployment](#deployment)
   * [Deploy Azure Resources](#deploy-azure-resources)
@@ -23,7 +23,9 @@
 - [License](#license)
 <!-- tocstop -->
 
-# Platforms
+# Architecture
+![architecture](./docs/img/arch.png)
+
 * [Bot Framework](https://docs.botframework.com/en-us/skype/calling/) with [Skype Calling](https://docs.botframework.com/en-us/skype/calling/) channel  
 Routes calls to the bot
 * [Bing Speech Service](https://docs.microsoft.com/en-us/azure/cognitive-services/speech/home)  
@@ -77,10 +79,14 @@ Create the following resources using the [Azure Portal](https://portal.azure.com
 1. Leave the messaging endpoint blank for now
 1. After your bot is registered, click through to its Skype Channel and ensure that **Skype Calling is enabled**. Your calling endpoint is `https://YOUR_WEB_APP.azurewebsites.net/api/calling`
 
+> See guided screenshots of [bot registration](./docs/Bot-Registration.md) and [enabling Skype Calling](./docs/Enable-Skype-Calling.md)
+
 ### Find your LUIS programmatic key
 1. Log in to the [LUIS Portal](https://www.luis.ai/)
 1. Navigate to the `My Keys` tab
 1. Make a note of your `Programmatic API Key`
+
+> See guided screenshots of finding the [LUIS programmatic key](./docs/LUIS-Programmatic-Key.md)
 
 ### Azure App Service Application Settings
 Create the following application settings on your Web App:
@@ -125,7 +131,7 @@ After building the project (see [build](#build)), upload the contents of `dist` 
 
 ## Automated ARM Deployment
 To automatically create, configure, and deploy all Azure resources at once, run the following commands in PowerShell (or use your favorite ARM deployment tool):
-> You will be prompted for **four** configuration parameters. See [configuration](#configure-azure-resources) if you need help finding the correct values.
+> You will be prompted for **three** configuration parameters. See the [Bot Registration Guide ](./docs/Bot-Registration.md) and the [LUIS Programmatic-Key Guide](./docs/LUIS-Programmatic-Key.md) if you need help finding these values.
 ```PowerShell
 $rg = "call-center"
 $loc = "eastus"
