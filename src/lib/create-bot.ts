@@ -1,16 +1,15 @@
-import path = require('path');
 import { SearchResultDocument } from 'azure-search-client';
 import {
   CallSession, IBotStorage, ICallConnector,
   IDialogResult, IPromptChoiceResult, Prompts,
   ResumeReason, UniversalCallBot } from 'botbuilder-calling';
 import { IUnderstandResult, SpeechDialog } from 'botbuilder-calling-speech';
-import { BotCallRecorder } from 'botbuilder-calling-test';
 import { LuisResult } from "cognitive-luis-client";
 import { APP, ProductSkuSelection } from './app';
 import { BOT_SETTINGS } from './config';
 import { BOT_LOGGER, BOT_SPEECH, BOT_STORAGE } from './services';
 import { prompt, promptChoices } from './util';
+import { configurationBotMiddleware } from './configure';
 
 interface SkuChoice {
   name: string;
@@ -22,9 +21,11 @@ interface ISkuResult extends IDialogResult<SkuChoice> { }
 export default function createBot(connector: ICallConnector, botStorage?: IBotStorage): UniversalCallBot {
   BOT_SETTINGS.storage = botStorage || BOT_STORAGE;
   const bot = new UniversalCallBot(connector, BOT_SETTINGS);
-  bot.library(BOT_SPEECH);
-  // bot.use(new BotCallRecorder({rootDir: path.resolve(__dirname, '../../spec/data/bot/test-1')}).middleware);
   bot.on('error', console.error);
+  bot.library(BOT_SPEECH);
+  bot.use(configurationBotMiddleware);
+  // bot.use(BOT_LOGGER.callingMiddleware);
+  // bot.use(new BotCallRecorder({rootDir: path.resolve(__dirname, '../../spec/data/bot/test-1')}).middleware);
 
   /**
    * DIALOG

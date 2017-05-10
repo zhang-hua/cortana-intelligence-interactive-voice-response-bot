@@ -6,29 +6,45 @@ import configureSearch from './search';
 import configureSql from './sql';
 import { LUIS_MANAGER_SETTINGS } from '../config';
 import { Request, Response, NextFunction } from 'express';
+import { IMiddlewareMap, CallSession, IDialogResult } from 'botbuilder-calling';
 
 export type Callback = (err: Error, ...args: any[]) => void;
 
-const CONFIGURED = path.resolve(__dirname, '../../data/.configured');
+const CONFIGURED_PATH = path.resolve(__dirname, '../../data/.configured');
+
+export const CONFIG_STATE = { configured: false, configuring: false };
 
 export function configureServices(callback: Callback) {
-  fs.readFile(CONFIGURED, (err) => {
-    // run configuration if status file not present
-    if (err && err.code === 'ENOENT') {
-      configure(callback);
 
-    // read error
-    } else if (err) {
+  isConfigured((err, configured) => {
+    if (err) {
       callback(err);
-
-    // already configured
-    } else {
+    } else if (configured) {
       callback(null);
+    } else {
+      configure(callback);
     }
   });
 }
 
-export function configurationMiddleware(req: Request, res: Response, next: NextFunction) {
+function isConfigured(callback: (err: Error, configured: boolean) => void): void {
+  if (CONFIG_STATE.configured) {
+    return callback(null, true);
+  } else {
+    fs.readFile(CONFIGURED_PATH, (err) => {
+      if (err && err.code === 'ENOENT') {
+        callback(null, false);
+      } else if (err) {
+        callback(err, null);
+      } else {
+        CONFIG_STATE.configured = true;
+        callback(null, true);
+      }
+    });
+  }
+}
+
+export function configurationWebMiddleware(req: Request, res: Response, next: NextFunction) {
 
   // app settings have been persisted
   if (LUIS_MANAGER_SETTINGS.key) {
@@ -47,7 +63,44 @@ export function configurationMiddleware(req: Request, res: Response, next: NextF
   }
 };
 
+export const configurationBotMiddleware: IMiddlewareMap = {
+  botbuilder: (session: CallSession, next: Function): void => {
+
+    if (CONFIG_STATE.configuring) {
+      return next();
+    }
+
+    isConfigured((err, configured) => {
+      if (err) {
+        return onError(err);
+      } else if (configured) {
+        return next();
+      }
+
+      const timer = setInterval(() => session.send('Please stand by.').sendBatch(), 10000);
+      session.send('Please stand by while this bot configures itself.').sendBatch();
+
+      configureServices((err) => {
+        clearInterval(timer);
+        if (err) {
+          return onError(err);
+        } else {
+          next();
+        }
+      });
+
+    });
+
+    function onError(err: Error) {
+      session.error(err);
+      session.endConversation('Sorry, there was a problem configuring this bot. Goodbye');
+      next();
+    }
+  }
+};
+
 function configure(callback: Callback) {
+  CONFIG_STATE.configuring = true;
   async.series([
 
     (next: Callback) => async.parallel([
@@ -63,6 +116,10 @@ function configure(callback: Callback) {
     ], next),
 
     // write status file so we can short-circuit next time
-    (next: Callback) => fs.writeFile(CONFIGURED, '', next),
+    (next: Callback) => {
+      fs.writeFile(CONFIGURED_PATH, '', next);
+      CONFIG_STATE.configured = true;
+      CONFIG_STATE.configuring = false;
+    },
   ], callback);
 }
