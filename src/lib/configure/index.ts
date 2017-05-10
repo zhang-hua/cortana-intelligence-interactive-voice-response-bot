@@ -4,12 +4,14 @@ import path = require('path');
 import configureLuis from './luis';
 import configureSearch from './search';
 import configureSql from './sql';
+import { LUIS_MANAGER_SETTINGS } from '../config';
+import { Request, Response, NextFunction } from 'express';
 
 export type Callback = (err: Error, ...args: any[]) => void;
 
 const CONFIGURED = path.resolve(__dirname, '../../data/.configured');
 
-export default function(callback: Callback) {
+export function configureServices(callback: Callback) {
   fs.readFile(CONFIGURED, (err) => {
     // run configuration if status file not present
     if (err && err.code === 'ENOENT') {
@@ -25,6 +27,25 @@ export default function(callback: Callback) {
     }
   });
 }
+
+export function configurationMiddleware(req: Request, res: Response, next: NextFunction) {
+
+  // app settings have been persisted
+  if (LUIS_MANAGER_SETTINGS.key) {
+    configureServices((err) => {
+      if (err) {
+        next(err);
+      } else {
+        res.status(200).json(true);
+      }
+    });
+
+  // app settings have NOT been persisted
+  // client should re-attempt request after a few seconds
+  } else {
+    setTimeout(() => res.redirect(req.url), 2500);
+  }
+};
 
 function configure(callback: Callback) {
   async.series([
