@@ -21,8 +21,13 @@ function processScripts(callback: Callback) {
     (next: Callback) => executeScript(SQL, 'functions/ufnGetSizesJson.sql', next),
     (next: Callback) => executeScript(SQL, 'functions/ufnIsDeleted.sql', next),
     (next: Callback) => executeScript(SQL, 'views/vProductsForSearch.sql', next),
-    (next: Callback) => SQL.ready((err, connection) => connection.once('end', next).close()),
+    (next: Callback) => closeSQL(next),
   ], callback);
+}
+
+function closeSQL(callback: Callback): void {
+  SQL.close();
+  callback(null);
 }
 
 function resolve(filePath: string): string {
