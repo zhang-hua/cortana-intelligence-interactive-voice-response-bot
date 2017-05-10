@@ -36,7 +36,7 @@ export function configurationMiddleware(req: Request, res: Response, next: NextF
       if (err) {
         next(err);
       } else {
-        res.status(200).json(true);
+        res.status(200).send();
       }
     });
 
