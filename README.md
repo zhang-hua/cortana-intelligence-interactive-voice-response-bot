@@ -28,7 +28,7 @@
 
 * [Bot Framework](https://docs.botframework.com/en-us/skype/calling/) with [Skype Calling](https://docs.botframework.com/en-us/skype/calling/) channel  
 Routes calls to the bot
-* [Bing Speech Service](https://docs.microsoft.com/en-us/azure/cognitive-services/speech/home)  
+* [Bing Speech Service](https://docs.microsoft.com/en-us/azure/cognitive-services/speech/home)    
 Processes speech-to-text
 * [LUIS](https://www.luis.ai/) (Language Understanding Intelligent Service)  
 Extracts intent and entities from text
@@ -44,7 +44,7 @@ Stores bot audio data for debugging
 Hosts the bot application
 
 # Build
-> Build environment should have the latest NodeJS runtime. Recommended v7.2 or newer.
+> Build environment should have the [latest NodeJS runtime](https://nodejs.org/en/download/current/). Recommended latest release of v7.
 
 From the root of this repo:
 1. `npm install`
@@ -68,8 +68,9 @@ Create the following resources using the [Azure Portal](https://portal.azure.com
 * `Azure SQL` (*with* AdventureWorksLT sample DB)
 * `Azure Search`
 * `Azure App Service`
-* `Bing Speech API` key
-* `Language Understanding Intelligent Service (LUIS)` key
+* `Cognitive Service` keys
+  * Key for `Bing Speech API`
+  * Key for `Language Understanding Intelligent Service (LUIS)`
 
 ## Configure Azure Resources
 
@@ -140,6 +141,10 @@ New-AzureRmResourceGroupDeployment -Name CallCenterSolution -ResourceGroupName $
 ```
 
 # Usage
+You will use the [Skype Client](https://www.skype.com/en/download-skype/skype-for-computer/) to initiate calls to your bot (*Skype for Business is not current supported*).
+
+> **Windows Users** may use the [App Store Client](https://www.microsoft.com/store/apps/9wzdncrfj364)
+
 Before talking to your bot, you must add it to your Skype contacts list. You can find a link to add your bot to Skype on the [Bot Portal](https://dev.botframework.com/) under the channel listing.
 
 > Directly add the bot to your contacts: https://join.skype.com/bot/**YOUR_APP_ID**
