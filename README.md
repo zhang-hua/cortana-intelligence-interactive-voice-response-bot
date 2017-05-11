@@ -192,7 +192,7 @@ Use a `filter` when the entity represents a broad or unambiguous category or if 
 ```
 "bicycle"     // "bicycle is a category entity
 "clothing"    // "clothing" is a category entity
-"red bicycle" // "red" is a color entity; "bicycle" is a category entity)
+"red bicycle" // "red" is a color entity; "bicycle" is a category entity
 ```
 
 Use a `boost` when the entity is included with other terms. E.g.:
