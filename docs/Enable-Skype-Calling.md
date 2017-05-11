@@ -3,19 +3,16 @@
 Calls are not automatically enabled for the Skype Channel. Before you can talk to your bot, you must enable this feature.
 
 1. Navigate to the [Bot Portal][1] and click your your bot's name.
-1. Find the Skype Channel and click `edit`  
-![screenshot][2]
+1. Click your your bot's name.  
+![screenshot][IMG1]
+1. Edit the bot's `Skype Configuration`
+![screenshot][IMG2]
 1. Find the option for `1:1 audio calls` and enable it, using your bot's `calling webhook`.  
-![screenshot][3]
+![screenshot][IMG3]
 1. Save the configuration.  
-![screenshot][4]
-
-> **Talking to your bot**
->
-> Replace **<YOUR_APP_ID>** with the App Id of your bot to add the bot to your Skype Contacts  
-> `https://join.skype.com/bot/<YOUR_APP_ID>`
+> Your bot's calling webhook is `https://YOUR_WEB_APP.azurewebsites.net/api/calls`
 
 [1]: https://dev.botframework.com/bots
-[2]: ./img/skype-channel-01.png
-[3]: ./img/skype-channel-02.png
-[4]: ./img/skype-channel-03.png
+[IMG1]: ./img/skype-channel-01.png
+[IMG2]: ./img/skype-channel-02.png
+[IMG3]: ./img/skype-channel-03.png
