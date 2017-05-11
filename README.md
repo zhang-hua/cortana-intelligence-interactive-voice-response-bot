@@ -197,8 +197,8 @@ Use a `filter` when the entity represents a broad or unambiguous category or if 
 
 Use a `boost` when the entity is included with other terms. E.g.:
 ```
-"mountain bicycle" // a category->bicycle would be ok here
-"bicycle rack"     // but not here. "bicycle racks" are in the accessories category; not bicycles
+"mountain bicycle" // a category->bicycle filter would be ok here
+"bicycle rack"     // but not here. "bicycle racks" are in the 'accessories' category; not the 'bicycles' category
 ```
 
 Apply a search filter to return only matches for `red bicycle` where the color field is `red`:
