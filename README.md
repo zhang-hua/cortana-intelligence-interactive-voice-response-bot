@@ -36,7 +36,7 @@ Extracts intent and entities from text
 Indexes the product catalog for product-query matching
 * [Azure SQL](https://docs.microsoft.com/en-us/azure/sql-database/)  
 Stores product and order data
-* [DocumentDB](https://docs.microsoft.com/en-us/azure/documentdb/)  
+* [Cosmos DB](https://docs.microsoft.com/en-us/azure/cosmos-db/)  
 Stores bot state and event logs
 * [Azure Storage](https://docs.microsoft.com/en-us/azure/storage/)  
 Stores bot audio data for debugging
@@ -64,7 +64,7 @@ To run unit tests, run `npm test`
 Create the following resources using the [Azure Portal](https://portal.azure.com/), [PowerShell](https://docs.microsoft.com/en-us/powershell/azure/install-azurerm-ps?view=azurermps-3.8.0), or [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli).
 > Unless otherwise noted, use any configuration and scale parameters you like
 * `Azure Storage`
-* `DocumentDB` (*without* Mongo)
+* `Cosmos DB` (*with* SQL / DocumentDB API)
 * `Azure SQL` (*with* AdventureWorksLT sample DB)
 * `Azure Search`
 * `Azure App Service`
@@ -112,8 +112,8 @@ Create the following application settings on your Web App:
 | SEARCH_KEY | **YOUR_SEARCH_KEY** |
 | BLOB_ACCOUNT | **YOUR_STORAGE_ACCOUNT** |
 | BLOB_KEY | **YOUR_STORAGE_ACCOUNT_KEY** |
-| DDB_URL | https://**YOUR_DOCUMENTDB_ACCOUNT**.documents.azure.com:443/ |
-| DDB_KEY | **YOUR_DOCUMENTDB_KEY** |
+| DDB_URL | https://**YOUR_COSMOS_DB_ACCOUNT**.documents.azure.com:443/ |
+| DDB_KEY | **YOUR_COSMOS_DB_KEY** |
 | SQL_HOST | **YOUR_AZURE_SQL_HOST** |
 | SQL_USER | **YOUR_AZURE_SQL_USER** |
 | SQL_PASSWORD | **YOUR_AZURE_SQL_PASSWORD** |
@@ -168,7 +168,7 @@ A basic deployment will scale to around 10 concurrent requests per second. Each 
 | Bing Speech | 20 | N/A | Custom account partitioning |
 | App Service | 100s | Add RAM/cores | Add instances |
 | Search | ~60 | N/A | Add replicas |
-| DocumentDB | ~10K | N/A | Add partitioning |
+| Cosmos DB (DocumentDB) | ~10K | N/A | Add partitioning |
 | Blobs | ~20K | N/A | N/A |
 
 > **CUSTOM ACCOUNT PARTITIONING**: Per-service scale-out configuration of Bing Speech and LUIS is not available, so custom sharding/partitioning of Bing Speech and LUIS APIs must be implemented in order to distribute load between multiple accounts. To achieve this, modify the bot app to either implement round-robin service requests, or apply hash-based routing based on the caller's userID.
