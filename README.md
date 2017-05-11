@@ -188,6 +188,7 @@ Your goal when building and training custom entities should be to identify objec
 ## Using entities with search (LUIS & Azure Search)
 There are two approaches to using entities with search: `filtering` and `boosting`. By applying a filter, you eliminate results that do not match the entity metadata. By applying a boost, you surface matching entities to the top of the result set, but you also return non-matches, albeit with a lower score. 
 
+### Entity Filters
 Use a `filter` when the entity represents a broad or unambiguous category or if the utterance is comprised *soley* of entities. E.g.:
 ```
 "bicycle"     // "bicycle is a category entity
@@ -195,18 +196,19 @@ Use a `filter` when the entity represents a broad or unambiguous category or if 
 "red bicycle" // "red" is a color entity; "bicycle" is a category entity
 ```
 
+Apply a search filter to return only matches for `red bicycle` where the color field is `red`:
+```
+<url>?search=red bicycle&$filter=colors/any(x: x eq 'red')
+```
+
+### Entity Boosts
 Use a `boost` when the entity is included with other terms. E.g.:
 ```
 "mountain bicycle" // a category->bicycle filter would be ok here
 "bicycle rack"     // but not here. "bicycle racks" are in the 'accessories' category; not the 'bicycles' category
 ```
 
-Apply a search filter to return only matches for `red bicycle` where the color field is `red`:
-```
-<url>?search=red bicycle&$filter=colors/any(x: x eq 'red')
-```
-
-Or apply a boost to raise the score for the same results from the filtered query (typically bringing matches to the top of the result set) *while still including other colors as well* (e.g. if `red` was not available):
+Apply a search boost to raise the score for the same results from the filtered query (typically bringing matches to the top of the result set) *while still including other colors as well* (e.g. if `red` was not available):
 ```
 <url>?red bicycle colors:red^2
 ```
