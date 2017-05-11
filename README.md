@@ -53,11 +53,7 @@ From the root of this repo:
 1. `cd dist`
 1. `npm install --production`
 
-## Test
-To run unit tests, run `npm test`
-
 # Deployment
-
 > [Automated ARM deployment](#automated-arm-deployment) is also available
 
 ## Deploy Azure Resources
@@ -174,7 +170,7 @@ A basic deployment will scale to around 10 concurrent requests per second. Each 
 > **CUSTOM ACCOUNT PARTITIONING**: Per-service scale-out configuration of Bing Speech and LUIS is not available, so custom sharding/partitioning of Bing Speech and LUIS APIs must be implemented in order to distribute load between multiple accounts. To achieve this, modify the bot app to either implement round-robin service requests, or apply hash-based routing based on the caller's userID.
 
 # Customization
-This bot is tuned end-to-end to work specifically with the AdeventureWorks sample product database. In order to transition to a custom data set, some consideration must be taken to account for the format and structure of your custom data and how best to apply best practices for LUIS and Azure Search.
+This bot is tuned end-to-end to work specifically with the AdventureWorks sample product database. In order to transition to a custom data set, some consideration must be taken to account for the format and structure of your custom data and how best to apply best practices for LUIS and Azure Search.
 
 ## Identify custom entities (LUIS)
 Every domain has a different set of common entities. An entity represents a class of similar objects that are detected from raw text by LUIS. There are three main types of entity: prebuilt (cross-domain, provided by Bing), custom (learned from your labeled data), and closed-list (a static set of terms). This app uses only closed-list entities across four classes: `color`, `category`, `sex`, and `size`.
