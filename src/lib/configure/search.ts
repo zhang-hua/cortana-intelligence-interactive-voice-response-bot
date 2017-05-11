@@ -2,8 +2,9 @@ import async = require('async');
 import path = require('path');
 import fs = require('fs');
 import { Callback } from '.';
-import { SQL_SETTINGS } from '../config';
+import { SQL_SETTINGS, SEARCH_SETTINGS } from '../config';
 import { SEARCH } from '../services';
+import { SearchResponse, SearchResult } from 'azure-search-client';
 
 const rootDir = '../../data/search';
 
@@ -31,7 +32,21 @@ export default function(callback: Callback) {
     // run the indexer
     (next: Callback) => SEARCH.runIndexer('products', callback),
 
+    // wait
+    (next: Callback) => waitForResults(next),
+
   ], callback);
+}
+
+function waitForResults(callback: Callback): void {
+  async.doWhilst(
+    (next: any) => SEARCH.search(SEARCH_SETTINGS.index, {count:true}, next),
+    (...args: any[]) => { // typedef is broken
+      const resp = args[0] as SearchResponse<SearchResult>;
+      return resp.result['@search.count'] === 0;
+    },
+    callback
+  )
 }
 
 function continueOnExists(callback: Callback): Callback {
