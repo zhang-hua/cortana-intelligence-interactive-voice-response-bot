@@ -24,6 +24,12 @@ export default function createBot(connector: ICallConnector, botStorage?: IBotSt
   bot.on('error', console.error);
   bot.library(BOT_SPEECH);
   bot.use(configurationBotMiddleware);
+  bot.use({
+    receive: (event, next) => {
+      console.log('receive', JSON.stringify(event, null, 2));
+      next();
+    },
+  });
   // bot.use(BOT_LOGGER.callingMiddleware);
   // bot.use(new BotCallRecorder({rootDir: path.resolve(__dirname, '../../spec/data/bot/test-1')}).middleware);
 
