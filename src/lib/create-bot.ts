@@ -1,8 +1,8 @@
 import { SearchResultDocument } from 'azure-search-client';
 import {
   CallSession, IBotStorage, ICallConnector,
-  IDialogResult, IPromptChoiceResult, Prompts,
-  ResumeReason, UniversalCallBot } from 'botbuilder-calling';
+  IDialogResult, IPromptChoiceResult, IPromptConfirmResult,
+  Prompts, ResumeReason, UniversalCallBot } from 'botbuilder-calling';
 import { IUnderstandResult, SpeechDialog } from 'botbuilder-calling-speech';
 import { LuisResult } from "cognitive-luis-client";
 import { APP, ProductSkuSelection } from './app';
@@ -36,7 +36,14 @@ export default function createBot(connector: ICallConnector, botStorage?: IBotSt
       session.beginDialog('/findProduct');
     },
     (session: CallSession, args: ISkuResult, next) => {
-      session.endDialog(`You are ordering ${args.response.name} ${args.response.sku}. Goodbye`);
+      Prompts.confirm(session, `You are ordering ${args.response.name} ${args.response.sku}. Would you like to order another product?`);
+    },
+    (session: CallSession, args: IPromptConfirmResult, next) => {
+      if (args.response) {
+        session.beginDialog('/');
+      } else {
+        session.endDialog('Thanks for your order! Goodbye.');
+      }
     },
   ]);
 
