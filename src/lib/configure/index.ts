@@ -1,12 +1,12 @@
 import async = require('async');
 import fs = require('fs');
 import path = require('path');
+import { CallSession, IDialogResult, IMiddlewareMap } from 'botbuilder-calling';
+import { NextFunction, Request, Response } from 'express';
+import { LUIS_MANAGER_SETTINGS } from '../config';
 import configureLuis from './luis';
 import configureSearch from './search';
 import configureSql from './sql';
-import { LUIS_MANAGER_SETTINGS } from '../config';
-import { Request, Response, NextFunction } from 'express';
-import { IMiddlewareMap, CallSession, IDialogResult } from 'botbuilder-calling';
 
 export type Callback = (err: Error, ...args: any[]) => void;
 
@@ -61,10 +61,10 @@ export function configurationWebMiddleware(req: Request, res: Response, next: Ne
   } else {
     setTimeout(() => res.redirect(req.url), 2500);
   }
-};
+}
 
 export const configurationBotMiddleware: IMiddlewareMap = {
-  botbuilder: (session: CallSession, next: Function): void => {
+  botbuilder: (session: CallSession, next: () => void): void => {
 
     if (CONFIG_STATE.configuring) {
       return next();
@@ -96,7 +96,7 @@ export const configurationBotMiddleware: IMiddlewareMap = {
       session.endConversation('Sorry, there was a problem configuring this bot. Goodbye');
       next();
     }
-  }
+  },
 };
 
 function configure(callback: Callback) {

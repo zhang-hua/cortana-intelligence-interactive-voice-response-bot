@@ -7,9 +7,9 @@ import { IUnderstandResult, SpeechDialog } from 'botbuilder-calling-speech';
 import { LuisResult } from "cognitive-luis-client";
 import { APP, ProductSkuSelection } from './app';
 import { BOT_SETTINGS } from './config';
+import { configurationBotMiddleware } from './configure';
 import { BOT_LOGGER, BOT_SPEECH, BOT_STORAGE } from './services';
 import { prompt, promptChoices } from './util';
-import { configurationBotMiddleware } from './configure';
 
 interface SkuChoice {
   name: string;
