@@ -1,5 +1,5 @@
 {
-  "luis_schema_version": "2.0.0",
+  "luis_schema_version": "2.1.0",
   "versionId": "0.1",
   "name": "AdventureWorks",
   "desc": "",
@@ -10,6 +10,12 @@
     },
     {
       "name": "intent.order.status"
+    },
+    {
+      "name": "intent.product.info"
+    },
+    {
+      "name": "intent.product.price"
     },
     {
       "name": "None"
@@ -336,25 +342,25 @@
       "name": "Sizes",
       "subLists": [
         {
-          "canonicalForm": "small",
+          "canonicalForm": "S",
           "list": [
             "small"
           ]
         },
         {
-          "canonicalForm": "medium",
+          "canonicalForm": "M",
           "list": [
             "medium"
           ]
         },
         {
-          "canonicalForm": "large",
+          "canonicalForm": "L",
           "list": [
             "large"
           ]
         },
         {
-          "canonicalForm": "extra large",
+          "canonicalForm": "XL",
           "list": [
             "extra large"
           ]
@@ -375,15 +381,19 @@
       "entities": []
     },
     {
-      "text": "red mountain bike",
+      "text": "jersey",
       "intent": "None",
-      "entities": [
-        {
-          "entity": "product",
-          "startPos": 4,
-          "endPos": 11
-        }
-      ]
+      "entities": []
+    },
+    {
+      "text": "bicycle",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "bottom bracket",
+      "intent": "None",
+      "entities": []
     },
     {
       "text": "i want to create an order",
@@ -393,6 +403,90 @@
     {
       "text": "what is the status of my order",
       "intent": "intent.order.status",
+      "entities": []
+    },
+    {
+      "text": "has my order shipped?",
+      "intent": "intent.order.status",
+      "entities": []
+    },
+    {
+      "text": "when will my order ship?",
+      "intent": "intent.order.status",
+      "entities": []
+    },
+    {
+      "text": "where is my order?",
+      "intent": "intent.order.status",
+      "entities": []
+    },
+    {
+      "text": "what is the mountain 200?",
+      "intent": "intent.product.info",
+      "entities": [
+        {
+          "entity": "product",
+          "startPos": 12,
+          "endPos": 23
+        }
+      ]
+    },
+    {
+      "text": "tell me about the fender set",
+      "intent": "intent.product.info",
+      "entities": [
+        {
+          "entity": "product",
+          "startPos": 18,
+          "endPos": 27
+        }
+      ]
+    },
+    {
+      "text": "what is bike wash?",
+      "intent": "intent.product.info",
+      "entities": [
+        {
+          "entity": "product",
+          "startPos": 8,
+          "endPos": 16
+        }
+      ]
+    },
+    {
+      "text": "tell me more about ml road handlebars",
+      "intent": "intent.product.info",
+      "entities": [
+        {
+          "entity": "product",
+          "startPos": 19,
+          "endPos": 36
+        }
+      ]
+    },
+    {
+      "text": "what is the cost of the pump?",
+      "intent": "intent.product.price",
+      "entities": []
+    },
+    {
+      "text": "what is the price of the bottle cage?",
+      "intent": "intent.product.price",
+      "entities": []
+    },
+    {
+      "text": "how much does the bicycle cost?",
+      "intent": "intent.product.price",
+      "entities": []
+    },
+    {
+      "text": "what does the bottom bracket cost?",
+      "intent": "intent.product.price",
+      "entities": []
+    },
+    {
+      "text": "how much is the long sleeve logo jersey",
+      "intent": "intent.product.price",
       "entities": []
     }
   ]
