@@ -1,39 +1,61 @@
-import { Connection, ConnectionOptions } from 'tedious';
+import { Connection, ConnectionOptions, Request } from 'tedious';
 
 export type ReadyCallback = (err: Error, connection: Connection) => void;
+// export type RowsCallback = (err: Error, rows: {[key: string]: any});
 
 export class SqlClient {
   private queue: ReadyCallback[] = [];
   private connection: Connection;
-  private connected: boolean | Error = false;
-  private closed: boolean;
+  private connected: boolean;
+  private connecting: boolean;
+  private connectionError: Error;
 
   constructor(private options: ConnectionOptions) {
-    this.connection = new Connection(options);
+  }
+
+  ready(callback: ReadyCallback): void {
+    if (this.connected) {
+      this.onReady(callback);
+    } else {
+      if (!this.connecting) {
+        this.init();
+      }
+      this.queue.push(callback);
+    }
+  }
+
+  // requestRows(request: Request, callback: RowsCallback): void {
+  //   this.ready((err, conn) => {
+  //     if (err) {
+  //       return callback(err, null);
+  //     }
+  //     request.on('row')
+  //   });
+  // }
+
+  close(): void {
+    if (this.connected) {
+      this.connection.close();
+      this.connected = false;
+    }
+  }
+
+  private init() {
+    if (this.connection) {
+      this.connection.close();
+    }
+    this.connecting = true;
+    this.connection = new Connection(this.options);
     this.connection.on('connect', (err: Error) => this.onConnected(err));
     this.connection.on('error', console.error); // typically transient/disconnect errors
   }
 
-  ready(callback: ReadyCallback): void {
-    if (this.closed) {
-      callback(new Error('SQL connection is closed'), null);
-    } else if (this.connected === false) {
-      this.queue.push(callback);
-    } else {
-      this.onReady(callback);
-    }
-  }
-
-  close(): void {
-    if (this.connected === true) {
-      this.connection.close();
-      this.connected = false;
-    }
-    this.closed = true;
-  }
-
   private onConnected(err: Error): void {
-    this.connected = err || true;
+    this.connecting = false;
+    this.connectionError = err;
+    if (!err) {
+      this.connected = true;
+    }
     if (this.queue.length) {
       this.queue.forEach((x) => this.onReady(x));
       this.queue.length = 0;
@@ -41,8 +63,8 @@ export class SqlClient {
   }
 
   private onReady(callback: ReadyCallback): void {
-    if (this.connected instanceof Error) {
-      setImmediate(callback, this.connected, null);
+    if (this.connectionError instanceof Error) {
+      setImmediate(callback, this.connectionError, null);
     } else {
       setImmediate(callback, null, this.connection);
     }

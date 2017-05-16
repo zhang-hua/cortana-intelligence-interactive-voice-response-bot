@@ -89,6 +89,8 @@ export const SQL_SETTINGS = {
   options: {
     database: config('SQL_DATABASE'),
     encrypt: true,
+    rowCollectionOnRequestCompletion: true,
+    useColumnNames: true,
   },
   password: config('SQL_PASSWORD'),
   server: config('SQL_HOST'),
