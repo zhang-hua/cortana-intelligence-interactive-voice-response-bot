@@ -20,5 +20,5 @@ export const SEARCH = new SearchClient(SEARCH_SETTINGS.service, SEARCH_SETTINGS.
 export const SPEECH = new SpeechClient(new SpeechAuthClient(SPEECH_SETTINGS.key, SPEECH_SETTINGS.region, true), SPEECH_SETTINGS.endpoint);
 export const BOT_LOGGER = new BotLogger(BLOBS, DOCUMENTS, LOG_SETTINGS).on('error', console.error);
 export const BOT_STORAGE = new DocumentDbBotStorage(DOCUMENTS, STORAGE_SETTINGS.documentdb);
-export const BOT_SPEECH = speechLibrary(SPEECH, LUIS);
+export const BOT_SPEECH_LIB = speechLibrary(SPEECH, LUIS);
 export const SQL = new SqlClient(SQL_SETTINGS);

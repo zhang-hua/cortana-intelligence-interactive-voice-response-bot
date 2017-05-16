@@ -56,13 +56,13 @@ class App {
 
     // map entities to selected attributes
     args.entities
-      .map((x) => {
+      .map((entity) => {
         return {
           // entity detected by luis
-          entity: x,
+          entity,
 
           // map to search and sku fields
-          mapping: _.find(SEARCH_SETTINGS.entities, {entity: x.type}),
+          mapping: _.find(SEARCH_SETTINGS.entities, {entity: entity.type}),
         };
       })
 
@@ -77,7 +77,7 @@ class App {
 
     // limit skus to selected attributes
     _.each(args.selected, (value, attribute) => {
-      args.skus = args.skus.filter((sku) => sku[attribute].toLowerCase() === value);
+      args.skus = args.skus.filter((sku) => sku[attribute].toLowerCase() === value.toLowerCase());
     });
     return args.skus;
   }
@@ -85,20 +85,20 @@ class App {
   getNextSkuAttribute(skus: ProductSku[]): {name: string, choices: string[]} {
 
     // TODO handle 0 skus
-    const sets = skus.reduce((m, c) => {
-      Object.keys(c)
-        .filter((x) => x !== 'productNumber')
-        .forEach((x) => {
-          m[x] = m[x] || new Set<string>();
-          m[x].add(c[x]);
+    const sets = skus.reduce((sets, sku) => {
+      Object.keys(sku)
+        .filter((attr) => attr !== 'productNumber')
+        .forEach((attr) => {
+          sets[attr] = sets[attr] || new Set<string>();
+          sets[attr].add(sku[attr]);
         });
-      return m;
+      return sets;
     }, {});
 
     return Object.keys(sets)
-      .map((x) => ({
-        choices: Array.from<string>(sets[x]),
-        name: x,
+      .map((attr) => ({
+        choices: Array.from<string>(sets[attr]),
+        name: attr,
       })).find((x) => x.choices.length > 1);
   }
 
