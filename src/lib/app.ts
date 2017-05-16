@@ -72,7 +72,13 @@ class App {
       // set attribute selection for entity
       .forEach((x) => {
         const canonical = x.entity.resolution.values[0].toLowerCase();
-        args.selected[x.mapping.sku] = canonical;
+
+        // only if this entity value is valid for at least 1 sku
+        if (args.skus.some((sku) => sku[x.mapping.sku].toLowerCase() === canonical)) {
+          args.selected[x.mapping.sku] = canonical;
+        }
+
+        // todo return invalid entity value to user
       });
 
     // limit skus to selected attributes

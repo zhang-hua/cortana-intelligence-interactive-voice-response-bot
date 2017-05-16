@@ -122,7 +122,6 @@ ORDER_PRODUCT_LIB.dialog('/chooseProductSKU', [
   (session: CallSession, args: ProductSkuSelection, next) => {
     session.dialogData.args = args;
     const skus = APP.getSkuChoices(args);
-    console.log('skus', skus);
 
     if (skus.length === 1) {
       const sku: SkuChoice = { name: args.product, sku: skus[0].productNumber };
