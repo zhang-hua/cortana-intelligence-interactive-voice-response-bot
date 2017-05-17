@@ -16,7 +16,7 @@
   "author": "chstone@microsoft.com",
   "license": "MIT",
   "repository": {
-    "url": "https://chstone-microsoft.visualstudio.com/ms-internal/_git/adventure-works-bot",
+    "url": "https://github.com/Azure/cortana-intelligence-call-center-solution",
     "type": "git"
   },
   "devDependencies": {
