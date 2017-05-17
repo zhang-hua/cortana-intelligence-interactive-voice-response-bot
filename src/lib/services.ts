@@ -6,11 +6,11 @@ import { DocumentDbBotStorage } from 'botbuilder-storage-documentdb';
 import { LuisClient, LuisTrainingClient } from 'cognitive-luis-client';
 import { SpeechAuthClient, SpeechClient } from 'cognitive-speech-client';
 import { DocumentClient } from 'documentdb';
+import { SqlClient } from './mssql';
 import {
   BLOB_SETTINGS, DDB_SETTINGS, LOG_SETTINGS,
   LUIS_MANAGER_SETTINGS, LUIS_SETTINGS, SEARCH_SETTINGS,
-  SPEECH_SETTINGS, SQL_SETTINGS, STORAGE_SETTINGS } from './config';
-import { SqlClient } from './mssql';
+  SPEECH_SETTINGS, SQL_SETTINGS, STORAGE_SETTINGS } from './settings';
 
 export const BLOBS = new BlobService(BLOB_SETTINGS.account, BLOB_SETTINGS.key); // TODO retry options
 export const DOCUMENTS = new DocumentClient(DDB_SETTINGS.url, { masterKey: DDB_SETTINGS.key }); // TODO retry options

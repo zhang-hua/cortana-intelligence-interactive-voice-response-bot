@@ -2,9 +2,9 @@ import async = require('async');
 import { QueryOptions, SearchCallback, SearchResponse, SearchResult, SearchResultDocument } from 'azure-search-client';
 import { Entity, LuisResult } from 'cognitive-luis-client';
 import { SpeechResult } from 'cognitive-speech-client';
-import { SEARCH_SETTINGS } from './config';
 import _ from './lodash-mixins';
 import { SEARCH } from './services';
+import { SEARCH_SETTINGS } from './settings';
 import { getEntityScopes, setImmediate } from './util';
 
 export interface SkuAttributes {

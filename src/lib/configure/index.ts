@@ -3,7 +3,7 @@ import fs = require('fs');
 import path = require('path');
 import { CallSession, IDialogResult, IMiddlewareMap } from 'botbuilder-calling';
 import { NextFunction, Request, Response } from 'express';
-import { LUIS_MANAGER_SETTINGS } from '../config';
+import { LUIS_MANAGER_SETTINGS } from '../settings';
 import configureLuis from './luis';
 import configureSearch from './search';
 import configureSql from './sql';

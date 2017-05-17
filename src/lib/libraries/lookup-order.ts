@@ -4,8 +4,8 @@ import {
   IPromptConfirmResult, IPromptDigitsResult, Library,
   Prompts, ResumeReason, UniversalCallBot } from 'botbuilder-calling';
 import { IUnderstandRecording, LuisDialog, SpeechDialog } from 'botbuilder-calling-speech';
-import { SEARCH_SETTINGS } from '../config';
 import { SQL } from '../services';
+import { SEARCH_SETTINGS } from '../settings';
 import {
   ORDER_DETAILS_SQL, ORDER_INFO_SQL, ORDER_STATUS,
   ORDER_STATUS_TEXT, ORDER_STATUS_VERB } from './lookup-order.const';

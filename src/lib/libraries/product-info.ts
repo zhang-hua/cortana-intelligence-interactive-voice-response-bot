@@ -4,8 +4,8 @@ import {
   Library, Prompts, ResumeReason,
   UniversalCallBot } from 'botbuilder-calling';
 import { IUnderstandRecording, LuisDialog, SpeechDialog } from 'botbuilder-calling-speech';
-import { SEARCH_SETTINGS } from '../config';
 import { SEARCH } from '../services';
+import { SEARCH_SETTINGS } from '../settings';
 
 const PRODUCT_INFO_NAME = 'ProductInfo';
 const PRODUCT_INFO_ROOT = '/';

@@ -4,8 +4,8 @@ import fs = require('fs');
 import _ = require('lodash');
 import { ManagementResponse } from 'cognitive-luis-client';
 import { Callback } from '.';
-import { LUIS_MANAGER_SETTINGS } from '../config';
 import { LUIS, LUIS_MANAGER } from '../services';
+import { LUIS_MANAGER_SETTINGS } from '../settings';
 
 const ERROR_APP_EXISTS = 'An application with the same name already exists';
 const ERROR_KEY_EXISTS = 'A subscription with the same key already exists for the user';

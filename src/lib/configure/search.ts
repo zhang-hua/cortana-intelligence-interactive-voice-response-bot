@@ -1,10 +1,10 @@
 import async = require('async');
 import path = require('path');
 import fs = require('fs');
-import { Callback } from '.';
-import { SQL_SETTINGS, SEARCH_SETTINGS } from '../config';
-import { SEARCH } from '../services';
 import { SearchResponse, SearchResult } from 'azure-search-client';
+import { Callback } from '.';
+import { SEARCH } from '../services';
+import { SEARCH_SETTINGS, SQL_SETTINGS } from '../settings';
 
 const rootDir = '../../data/search';
 

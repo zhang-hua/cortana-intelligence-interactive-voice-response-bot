@@ -2,12 +2,12 @@ import {
   CallSession, IBotStorage, ICallConnector,
   IDialogResult, IPromptChoiceResult, IPromptConfirmResult,
   Prompts, ResumeReason, UniversalCallBot } from 'botbuilder-calling';
-import { BOT_SETTINGS } from './config';
 import { configurationBotMiddleware } from './configure';
 import { LOOKUP_ORDER_LIB } from './libraries/lookup-order';
 import { ORDER_PRODUCT_DIALOG, ORDER_PRODUCT_LIB } from './libraries/order-product';
 import { PRODUCT_INFO_LIB } from './libraries/product-info';
 import { BOT_SPEECH_LIB, BOT_STORAGE } from './services';
+import { BOT_SETTINGS } from './settings';
 
 export default function createBot(connector: ICallConnector, botStorage?: IBotStorage): UniversalCallBot {
   BOT_SETTINGS.storage = botStorage || BOT_STORAGE;

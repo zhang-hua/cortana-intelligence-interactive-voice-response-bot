@@ -38,7 +38,7 @@
     "async": "^2.3.0",
     "azure-search-client": "^1.1.8",
     "azure-storage": "^2.1.0",
-    "botbuilder": "^3.7.0",
+    "botbuilder": "^3.8.3",
     "botbuilder-calling": "https://chstone.blob.core.windows.net/public/botbuilder-calling-3.0.2-0.tgz",
     "botbuilder-calling-speech": "^1.0.20",
     "botbuilder-calling-test": "^1.0.8",

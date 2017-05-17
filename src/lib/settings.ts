@@ -1,3 +1,4 @@
+import { IChatConnectorSettings } from 'botbuilder';
 import { ICallConnectorSettings, IUniversalCallBotSettings } from 'botbuilder-calling';
 import path = require('path');
 import fs = require('fs');
@@ -17,6 +18,11 @@ export const CALL_SETTINGS: ICallConnectorSettings = {
   appPassword: config('MICROSOFT_APP_PASSWORD'),
   callbackUrl: config('CALLBACK_URL'),
 } as any;
+
+export const CHAT_SETTINGS: IChatConnectorSettings = {
+  appId: config('MICROSOFT_APP_ID'),
+  appPassword: config('MICROSOFT_APP_PASSWORD'),
+};
 
 // tslint:disable-next-line:no-var-requires
 export const BOT_SETTINGS: IUniversalCallBotSettings = require('../bot-settings.json');
