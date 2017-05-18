@@ -3,6 +3,12 @@ import { ICallConnectorSettings, IUniversalCallBotSettings } from 'botbuilder-ca
 import path = require('path');
 import fs = require('fs');
 import _ = require('lodash');
+import https = require('https');
+
+// tslint:disable:no-string-literal
+https.globalAgent['keepAlive'] = true;
+https.globalAgent['options'].keepAlive = true;
+// tslint:enable:no-string-literal
 
 export interface SearchEntityMapping {
   entity: string;
