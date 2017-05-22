@@ -154,12 +154,12 @@ Before talking to your bot, you must add it to your Skype contacts list. You can
 Using your Skype client, initiate a call to your bot and follow the prompts. You can order any product in the standard adventure works category, such as a mountain bike, fenders, or bike wash. The bot will prompt you to disambiguate product names or to choose product attributes, if necessary.
 
 ## Sample product queries
-1. "mountain bike": general product category
-1. "what is mountain 500?": get more information about a specific product
-1. "mountain 500": specific product
-1. "mountain 500 in silver": specific product with specific color
-1. "bicycle for road use"
-1. "extra large jersey": general product category with specific size
+1. "*mountain bike*": a general product category
+1. "*what is mountain 500?*": get more information about a specific product
+1. "*mountain 500*": a specific product
+1. "*mountain 500 in silver*": a specific product with a specific color
+1. "*bicycle for road use*": a natural language query
+1. "*extra large jersey*": a general product category with specific size
 
 # Scaling
 A basic deployment will scale to around 10 concurrent requests per second. Each layer of the architecture supports a separate level of concurrency, but the entire solution is bound by the narrowest pipeline of all the services. Services may be scaled **up** to support higher throughput per resource, or scaled **out** to spread throughput across multiple resources.
@@ -178,9 +178,22 @@ A basic deployment will scale to around 10 concurrent requests per second. Each 
 > E.g. to double the capacity of LUIS, create a second LUIS application using the same JSON configuration as the first. Then modify your bot to perform round-robin (alternating) queries to each service.
 
 # Customization
-This bot is tuned end-to-end to work specifically with the AdventureWorks sample product database. In order to transition to a custom data set, some consideration must be taken to account for the format and structure of your custom data and how best to apply best practices for LUIS and Azure Search.
+This bot is tuned end-to-end to work specifically with the AdventureWorks sample product database. In order to transition to a custom data set, some consideration must be taken to account for the format and structure of your custom data and how to apply best practices for LUIS and Azure Search.
 
-## Identify custom entities (LUIS)
+## Identify your intents (LUIS)
+Intents drive the workflow of your bot. If a caller is prompted to speak a product query, but responds with a desire to get the shipping status on an existing order, the bot should seamlessly branch to a new dialog to fulfill the new request, and then return to the original prompt.
+
+There are two primary challenges when working with open-ended, natural conversation dialogs:
+1. It is impractical to provide coverage for every conceivable intent. A bot is an intelligent conversationalist, not true Artificial Intelligence.
+1. User-discovery of the intent-recognition scenarios that the bot *does* support can be difficult to facilitate without rote narration of available options.
+
+To overcome these challenges, it is often best to begin with a directed, pre-assumed intent. Try to guide the conversation as much as possible with yes-or-no questions or short, multiple choice options.
+
+However, allow the caller to go off-script when the intent does not match the prompt. The Bot Framework manages a dialog stack for you, so your bot can easily fork to a new set of prompts and responses before returning to the original, directed, dialog.
+
+Your custom intents should be domain-specific, but still generic actions. An intent describes the **action** and the **domain** of some user request. A domain is a high level grouping of some logical section of your app (e.g. products, orders, calendar). The action is some verb that describes what to do against that domain (typically a variant of the typical database CRUD actions–Create, Read, Update, Delete). An intent returned from LUIS may include entities, which can be thought of in terms of natural language as the objects to a transitive verb. An entity is the "on what" or "against what" component of the intent's action.
+
+## Identify your entities (LUIS)
 Every domain has its own set of common entities. An entity represents a class of similar objects that are detected from raw text by LUIS. There are three main types of entities: **prebuilt** (cross-domain, provided by Bing), **custom** (learned from your labeled data), and **closed-list** (a static set of terms chosen by you). This app uses only closed-list entities across four classes: `color`, `category`, `sex`, and `size`.
 
 Your goal when building and training custom entities should be to identify object classes that can be used by the search engine to boost results for the specified class.
