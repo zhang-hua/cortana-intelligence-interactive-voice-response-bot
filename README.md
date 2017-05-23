@@ -11,7 +11,7 @@
 - [Manual Deployment](#manual-deployment)
   * [Deploy Azure Resources](#deploy-azure-resources)
   * [Configure Azure Resources](#configure-azure-resources)
-- [Automated Deployment](#automated-deployment)
+- [Automated Deployment](#automated-arm-deployment)
 - [Usage](#usage)
 - [Scaling](#scaling)
 - [Customization](#customization)
@@ -49,7 +49,7 @@ Stores bot audio data for debugging
 # Build
 This project is built using TypeScript. Your environment should have the ["current" NodeJS runtime][11] in order to build the project.
 
-> If you are only interested in **[automated deployment](#automated-deployment)**, you may skip this section.
+> If you are only interested in **[automated deployment](#automated-arm-deployment)**, you may skip this section.
 
 After cloning this repo, run the following shell commands from the repo root:
 1. `npm install`
@@ -59,7 +59,7 @@ After cloning this repo, run the following shell commands from the repo root:
 1. `npm install --production`
 
 # Manual Deployment
-> If you are only interested in **[automated deployment](#automated-deployment)**, you may skip this section.
+> If you are only interested in **[automated deployment](#automated-arm-deployment)**, you may skip this section.
 
 ## Deploy Azure Resources
 Create the following resources using the [Azure Portal][12], [PowerShell][13], or [Azure CLI][14].
