@@ -194,6 +194,10 @@ However, allow the caller to go off-script when the intent does not match the pr
 
 Your custom intents should be domain-specific, but still generic actions. An intent describes the **action** and the **domain** of some user request. A domain is a high level grouping of some logical section of your app (e.g. products, orders, calendar). The action is some verb that describes what to do against that domain (typically a variant of the typical database CRUD actions–Create, Read, Update, Delete). An intent returned from LUIS may include entities, which can be thought of in terms of natural language as the objects to a transitive verb. An entity is the "on what" or "against what" component of the intent's action.
 
+> Learn how to [add entities to your LUIS app][27] in the LUIS portal.
+> 
+> Learn how to automatically [map your LUIS intents to Bot Dialogs][28] in code.
+
 ## Identify your entities (LUIS)
 Every domain has its own set of common entities. An entity represents a class of similar objects that are detected from raw text by LUIS. There are three main types of entities: **prebuilt** (cross-domain, provided by Bing), **custom** (learned from your labeled data), and **closed-list** (a static set of terms chosen by you). This app uses only closed-list entities across four classes: `color`, `category`, `sex`, and `size`.
 
@@ -435,3 +439,5 @@ SOFTWARE.
 [24]: https://azure.microsoft.com/en-us/blog/azure-search-synonyms-public-preview/
 [25]: https://docs.microsoft.com/en-us/azure/search/search-howto-connecting-azure-sql-database-to-azure-search-using-indexers
 [26]: https://chstone.blob.core.windows.net/public/SHTG/call-center-automation.zip
+[27]: https://docs.microsoft.com/en-us/azure/cognitive-services/LUIS/add-intents
+[28]: https://www.npmjs.com/package/botbuilder-calling-speech#automatic-intent-to-dialog-mapping
