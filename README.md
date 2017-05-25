@@ -188,11 +188,11 @@ There are two primary challenges when working with open-ended, natural conversat
 1. It is impractical to provide coverage for every conceivable intent. A bot is an intelligent conversationalist, not true Artificial Intelligence.
 1. User-discovery of the intent-recognition scenarios that the bot *does* support can be difficult to facilitate without rote narration of available options.
 
-To overcome these challenges, it is often best to begin with a directed, pre-assumed intent. Try to guide the conversation as much as possible with yes-or-no questions or short, multiple choice options.
+To overcome these challenges, it is often best to begin with a directed, default intent. Try to guide the conversation as much as possible with yes-or-no questions or short, multiple choice options.
 
-However, allow the caller to go off-script when the intent does not match the prompt. The Bot Framework manages a dialog stack for you, so your bot can easily fork to a new set of prompts and responses before returning to the original, directed, dialog.
+However, the service should allow the caller to go off-script when the caller's spoken intent does not match the prompt. The Bot Framework manages a dialog stack for you, so your bot can easily fork to a new set of prompts and responses before returning to the original, directed, dialog. Your custom intents should be domain-specific, but still generic actions. 
 
-Your custom intents should be domain-specific, but still generic actions. An intent describes the **action** and the **domain** of some user request. A domain is a high level grouping of some logical section of your app (e.g. products, orders, calendar). The action is some verb that describes what to do against that domain (typically a variant of the typical database CRUD actions–Create, Read, Update, Delete). An intent returned from LUIS may include entities, which can be thought of in terms of natural language as the objects to a transitive verb. An entity is the "on what" or "against what" component of the intent's action.
+An intent describes the **action** and the **domain** of some user request. A domain represents a high level grouping of some logical section of your app (e.g. products, orders, calendar). The action is some verb that describes what to do against that domain (typically a variant of the typical database CRUD actions–Create, Read, Update, Delete). An intent returned from LUIS may include entities, which, in terms of natural language, can be thought of as the objects to a transitive verb. An entity is the "on what" or "against what" component of the intent's action.
 
 > Learn how to [add entities to your LUIS app][27] in the LUIS portal.
 > 
