@@ -47,7 +47,7 @@ export class SqlClient {
     this.connecting = true;
     this.connection = new Connection(this.options);
     this.connection.on('connect', (err: Error) => this.onConnected(err));
-    this.connection.on('error', console.error); // typically transient/disconnect errors
+    this.connection.on('error', (err: Error) => this.onError(err));
   }
 
   private onConnected(err: Error): void {
@@ -60,6 +60,16 @@ export class SqlClient {
       this.queue.forEach((x) => this.onReady(x));
       this.queue.length = 0;
     }
+  }
+
+  private onError(err: Error): void {
+    console.error(err);
+    // tslint:disable-next-line:no-string-literal
+    if (err['code'] === 'ESOCKET') {
+      this.connected = false;
+      return;
+    }
+
   }
 
   private onReady(callback: ReadyCallback): void {
