@@ -81,7 +81,7 @@ Create the following resources using the [Azure Portal][12], [PowerShell][13], o
 1. Register a new bot at the [Bot Framework Portal][15]
 1. Create a new Microsoft App, and make note of its **ID** and **Secret**
 1. Leave the messaging endpoint blank for now
-1. After your bot is registered, click through to its Skype Channel and ensure that **Skype Calling is enabled**. Your calling endpoint is `https://YOUR_WEB_APP.azurewebsites.net/api/calling`
+1. After your bot is registered, click through to its Skype Channel and ensure that **Skype Calling is enabled**. Your calling endpoint is `https://YOUR_WEB_APP.azurewebsites.net/api/calls`
 
 
 ### Find your LUIS programmatic key
