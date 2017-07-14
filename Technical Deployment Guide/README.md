@@ -1,6 +1,8 @@
 # About this repo
-* Feedback: [Chris Stone][29]
+* Feedback: email [Cortana Intelligence Solutions][29] or post an issue in this repo
 * Use case: Provide an Interactive Voice Response (IVR) bot to process product orders for a fictitious company that sells bicycles and bicycle accessories.
+
+> If you want to **quickly deploy** this solution without touching any code you should use the automated [Cortana Intelligence Quick Start portal][30].
 
 ## Table of Contents
 
@@ -69,8 +71,8 @@ Create the following resources using the [Azure Portal][12], [PowerShell][13], o
 * `Azure Search`
 * `Azure App Service`
 * `Cognitive Service` keys:
-  * Key for `Bing Speech API`
-  * Key for `Language Understanding Intelligent Service (LUIS)`
+  * A key for `Bing Speech API`
+  * A key for `Language Understanding Intelligent Service (LUIS)`
 
 ## Configure Azure Resources
 
@@ -133,6 +135,8 @@ After building the project (see [build](#build)), upload the contents of `dist` 
 > You can also deploy from the command line using [WebDeploy][19]
 
 # Automated ARM Deployment
+*If you want to quickly deploy this solution without touching any code you should use the automated [Cortana Intelligence Quick Start portal][30].*
+
 To automatically create, configure, and deploy all Azure resources at once, run the following commands in PowerShell (or use your favorite ARM deployment tool):
 > You will be prompted for **three** configuration parameters. See the [Bot Registration Guide][REL1] and the [LUIS Programmatic-Key Guide][REL3] if you need help finding these values.
 ```PowerShell
@@ -441,3 +445,4 @@ SOFTWARE.
 [27]: https://docs.microsoft.com/en-us/azure/cognitive-services/LUIS/add-intents
 [28]: https://www.npmjs.com/package/botbuilder-calling-speech#automatic-intent-to-dialog-mapping
 [29]: mailto:cisolutions@microsoft.com?subject=IVR%20Solution%20Feedback
+[30]: https://gallery.cortanaintelligence.com/Solution/interactive-voice-response-bot
