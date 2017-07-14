@@ -1,6 +1,5 @@
 # About this repo
-* Maintainer: Chris Stone (chstone@microsoft.com)
-* Project: Call-Center Automation (Solution How-to Guide)
+* Feedback: [Chris Stone][29]
 * Use case: Provide an Interactive Voice Response (IVR) bot to process product orders for a fictitious company that sells bicycles and bicycle accessories.
 
 ## Table of Contents
@@ -137,10 +136,10 @@ After building the project (see [build](#build)), upload the contents of `dist` 
 To automatically create, configure, and deploy all Azure resources at once, run the following commands in PowerShell (or use your favorite ARM deployment tool):
 > You will be prompted for **three** configuration parameters. See the [Bot Registration Guide][REL1] and the [LUIS Programmatic-Key Guide][REL3] if you need help finding these values.
 ```PowerShell
-$rg = "call-center"
+$rg = "ivr-bot"
 $loc = "eastus"
 New-AzureRmResourceGroup $rg $loc
-New-AzureRmResourceGroupDeployment -Name CallCenterSolution -ResourceGroupName $rg -TemplateFile .\azuredeploy.json
+New-AzureRmResourceGroupDeployment -Name IVRBotSolution -ResourceGroupName $rg -TemplateFile .\azuredeploy.json
 ```
 
 # Usage
@@ -441,3 +440,4 @@ SOFTWARE.
 [26]: https://chstone.blob.core.windows.net/public/SHTG/call-center-automation.zip
 [27]: https://docs.microsoft.com/en-us/azure/cognitive-services/LUIS/add-intents
 [28]: https://www.npmjs.com/package/botbuilder-calling-speech#automatic-intent-to-dialog-mapping
+[29]: mailto:cisolutions@microsoft.com?subject=IVR%20Solution%20Feedback
