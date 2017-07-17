@@ -157,7 +157,7 @@ Before talking to your bot, you must add it to your Skype contacts list. You can
 
 > Directly add the bot to your contacts: https://join.skype.com/bot/YOUR_APP_ID
 
-Using your Skype client, initiate a call to your bot and follow the prompts. You can order any product in the standard adventure works category, such as a mountain bike, fenders, or bike wash. The bot will prompt you to disambiguate product names or to choose product attributes, if necessary.
+Using your Skype client, initiate a call to your bot and follow the prompts. You can order any product in the AdventureWorks product inventory, such as a mountain bike, fenders, or bike wash. The bot will prompt you to choose a matching product or to choose product attributes, as needed.
 
 ## Sample product queries
 1. "*mountain bike*": a general product category
@@ -168,10 +168,10 @@ Using your Skype client, initiate a call to your bot and follow the prompts. You
 1. "*extra large jersey*": a general product category with specific size
 
 # Scaling
-A basic deployment will scale to around 10 concurrent requests per second. Each layer of the architecture supports a separate level of concurrency, but the entire solution is bound by the narrowest pipeline of all the services. Services may be scaled **up** to support higher throughput per resource, or scaled **out** to spread throughput across multiple resources.
+A basic deployment will scale to around 10 concurrent requests per second. Each component of the architecture supports a separate level of concurrency, but the entire solution is bound by the narrowest pipeline of all the services. Services may be scaled **up** to support higher throughput per resource, or scaled **out** to spread throughput across multiple resources.
 
 | SERVICE | MAX RPS PER INSTANCE | SCALE UP | SCALE OUT |
-| ------- | ------------ | -------- | --------- |
+| ------- | -------------------- | -------- | --------- |
 | LUIS | 10 | N/A | Custom account partitioning |
 | Bing Speech | 20 | N/A | Custom account partitioning |
 | App Service | 100s | Add RAM/cores | Add instances |
