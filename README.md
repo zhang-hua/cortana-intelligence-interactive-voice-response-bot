@@ -16,19 +16,19 @@ This solution package contains materials to help both technical and business aud
 User initiates call
 * [Bot Connector][9] + [Skype Calling Channel][10]   
 Routes calls from Skype to the bot
-* [Azure App Services][11]  
+* [Azure App Services][17]  
 Hosts the bot application, which manages logic and API calls
-* [Cosmos DB][12]  
+* [Cosmos DB][15]  
 Stores bot state and event logs
-* [Bing Speech Service][13]    
+* [Bing Speech Service][11]    
 Processes speech-to-text
-* [LUIS][14] (Language Understanding Intelligent Service)  
+* [LUIS][12] (Language Understanding Intelligent Service)  
 Extracts intent and entities from text
-* [Azure Search][15]  
+* [Azure Search][13]  
 Indexes the product catalog for product-query matching
-* [Azure SQL][16]  
+* [Azure SQL][14]  
 Stores product and order data
-* [Azure Storage][17]  
+* [Azure Storage][16]  
 Stores bot audio data for debugging
 
 ## Business Audiences
