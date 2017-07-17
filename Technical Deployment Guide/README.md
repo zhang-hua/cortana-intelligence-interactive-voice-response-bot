@@ -212,7 +212,7 @@ Your goal when building and training custom entities should be to identify objec
 There are two approaches to using entities with search: `filtering` and `boosting`. By applying a filter, you eliminate results that do not match the entity metadata. By applying a boost, you surface matching entities to the top of the result set, but you also return non-matches, albeit with a lower score. 
 
 ### Entity Filters
-Use a `filter` when the entity represents a broad or unambiguous category or if the utterance is comprised *soley* of entities. E.g.:
+Use a `filter` when the entity represents a broad or unambiguous category or if the utterance is comprised *solely* of entities. E.g.:
 ```
 "bicycle"     // "bicycle is a category entity
 "clothing"    // "clothing" is a category entity
