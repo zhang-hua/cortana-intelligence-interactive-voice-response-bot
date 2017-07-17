@@ -149,7 +149,7 @@ New-AzureRmResourceGroupDeployment -Name IVRBotSolution -ResourceGroupName $rg -
 > If you have questions or issues about your automated deployment, please reach out to [Cortana Intelligence Solutions][31]. If this solution was helpful to you, please consider `starring` or `forking` this repo.
 
 # Usage
-You will use the [Skype Client][20] to initiate calls to your bot (*Skype for Business is not current supported*).
+You will use the [Skype Client][20] to initiate calls to your bot (for Skype for Business use, see [Adding a bot to Skype for Business][32]).
 
 > **Windows Users** may use the [App Store Client][21]
 
@@ -449,3 +449,4 @@ SOFTWARE.
 [29]: mailto:cisolutions@microsoft.com?subject=IVR%20Solution%20Feedback
 [30]: https://gallery.cortanaintelligence.com/Solution/interactive-voice-response-bot
 [31]: mailto:cisolutions@microsoft.com
+[32]: https://msdn.microsoft.com/en-us/skype/skype-for-business-bot-framework/docs/overview#add-bot
