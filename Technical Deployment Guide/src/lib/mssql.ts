@@ -1,4 +1,4 @@
-import { Connection, ConnectionOptions, Request } from 'tedious';
+import { Connection, ConnectionConfig, Request } from 'tedious';
 
 export type ReadyCallback = (err: Error, connection: Connection) => void;
 // export type RowsCallback = (err: Error, rows: {[key: string]: any});
@@ -10,7 +10,7 @@ export class SqlClient {
   private connecting: boolean;
   private connectionError: Error;
 
-  constructor(private options: ConnectionOptions) {
+  constructor(private options: ConnectionConfig) {
   }
 
   ready(callback: ReadyCallback): void {

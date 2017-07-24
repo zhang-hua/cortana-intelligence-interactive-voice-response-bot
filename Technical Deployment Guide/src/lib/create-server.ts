@@ -4,6 +4,6 @@ import process = require('process');
 
 export default function createServer(...args: any[]): https.Server | http.Server {
   return process.env.HTTPS === 'on'
-    ? https.createServer(args)
+    ? https.createServer(args[0])
     : http.createServer(args[0]);
 }
