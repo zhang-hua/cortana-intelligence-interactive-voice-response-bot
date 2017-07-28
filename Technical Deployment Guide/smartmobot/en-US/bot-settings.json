@@ -1,0 +1,10 @@
+{
+  "recordDefaults": { 
+    "maxDurationInSeconds": 6, 
+    "recordingFormat": "wav", 
+    "initialSilenceTimeoutInSeconds": 3, 
+    "maxSilenceTimeoutInSeconds": 1, 
+    "playBeep": false,
+    "stopTones": ["*"]
+  }
+}

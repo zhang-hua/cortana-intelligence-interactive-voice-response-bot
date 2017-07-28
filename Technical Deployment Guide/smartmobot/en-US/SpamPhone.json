@@ -1,0 +1,354 @@
+{
+  "luis_schema_version": "2.1.0",
+  "versionId": "0.2",
+  "name": "SpamPhone",
+  "desc": "",
+  "culture": "en-us",
+  "intents": [
+    {
+      "name": "intent.fraud"
+    },
+    {
+      "name": "intent.hello"
+    },
+    {
+      "name": "intent.house"
+    },
+    {
+      "name": "intent.insurance"
+    },
+    {
+      "name": "intent.loan"
+    },
+    {
+      "name": "None"
+    }
+  ],
+  "entities": [
+    {
+      "name": "award"
+    },
+    {
+      "name": "FamilyName"
+    },
+    {
+      "name": "house"
+    },
+    {
+      "name": "Insurance"
+    },
+    {
+      "name": "loan"
+    }
+  ],
+  "composites": [],
+  "closedLists": [],
+  "bing_entities": [
+    "number"
+  ],
+  "actions": [],
+  "model_features": [
+    {
+      "name": "award",
+      "mode": true,
+      "words": "award,awards,prize,winner,lottery,lotteries,awarded,reward,trophy,awarding,accolade,prizes,scholarship,accorded,contest,honor",
+      "activated": true
+    },
+    {
+      "name": "house",
+      "mode": true,
+      "words": "house,apartment,cottage,villa,property,townhouse,flat,residence,condo,bedroom,home,land,houses,dwelling,homes,apartments,condos,townhouses,condominiums,condominium,residences,estate,residential,abode,commercial",
+      "activated": true
+    },
+    {
+      "name": "Insurance",
+      "mode": true,
+      "words": "Insurance,life insurance,accident insurance,property insurance,airline insurance,trip insurance,health insurance,auto insurance,home insurance,disability insurance,dental insurance,car insurance,travel insurance,business insurance,homeowners insurance,insure,insured,renters insurance,motorcycle insurance,pet insurance,financial services,medical insurance,flood insurance,loans,annuities,liability insurance,commercial insurance",
+      "activated": true
+    },
+    {
+      "name": "loan",
+      "mode": true,
+      "words": "credit,pretty loan,cash,loan,debt,loans,mortgage,finance,money,investment,banking,bank financing,financing,funding,lending,funds,investments,fund,leasing",
+      "activated": true
+    }
+  ],
+  "regex_features": [],
+  "utterances": [
+    {
+      "text": "hello, are you mr. zhang?",
+      "intent": "intent.hello",
+      "entities": [
+        {
+          "entity": "FamilyName",
+          "startPos": 19,
+          "endPos": 23
+        }
+      ]
+    },
+    {
+      "text": "excuse me, are you mr. zhang?",
+      "intent": "intent.hello",
+      "entities": [
+        {
+          "entity": "FamilyName",
+          "startPos": 23,
+          "endPos": 27
+        }
+      ]
+    },
+    {
+      "text": "is mr zhang speaking?",
+      "intent": "intent.hello",
+      "entities": [
+        {
+          "entity": "FamilyName",
+          "startPos": 6,
+          "endPos": 10
+        }
+      ]
+    },
+    {
+      "text": "do you want to buy a house?",
+      "intent": "intent.house",
+      "entities": [
+        {
+          "entity": "house",
+          "startPos": 21,
+          "endPos": 25
+        }
+      ]
+    },
+    {
+      "text": "may i help you to introduce a house investment?",
+      "intent": "intent.house",
+      "entities": [
+        {
+          "entity": "house",
+          "startPos": 30,
+          "endPos": 34
+        }
+      ]
+    },
+    {
+      "text": "are you interested in house?",
+      "intent": "intent.house",
+      "entities": [
+        {
+          "entity": "house",
+          "startPos": 22,
+          "endPos": 26
+        }
+      ]
+    },
+    {
+      "text": "do you have any interest in buying a house?",
+      "intent": "intent.house",
+      "entities": [
+        {
+          "entity": "house",
+          "startPos": 37,
+          "endPos": 41
+        }
+      ]
+    },
+    {
+      "text": "hi, this is china life insurance company.",
+      "intent": "intent.insurance",
+      "entities": [
+        {
+          "entity": "Insurance",
+          "startPos": 18,
+          "endPos": 31
+        }
+      ]
+    },
+    {
+      "text": "do you need insurance?",
+      "intent": "intent.insurance",
+      "entities": [
+        {
+          "entity": "Insurance",
+          "startPos": 12,
+          "endPos": 20
+        }
+      ]
+    },
+    {
+      "text": "do you need money?",
+      "intent": "intent.loan",
+      "entities": [
+        {
+          "entity": "loan",
+          "startPos": 12,
+          "endPos": 16
+        }
+      ]
+    },
+    {
+      "text": "do you need money recently?",
+      "intent": "intent.loan",
+      "entities": [
+        {
+          "entity": "loan",
+          "startPos": 12,
+          "endPos": 16
+        }
+      ]
+    },
+    {
+      "text": "congratulations, you win prize.",
+      "intent": "intent.fraud",
+      "entities": [
+        {
+          "entity": "award",
+          "startPos": 25,
+          "endPos": 29
+        }
+      ]
+    },
+    {
+      "text": "congratulations, you have got an award.",
+      "intent": "intent.fraud",
+      "entities": [
+        {
+          "entity": "award",
+          "startPos": 33,
+          "endPos": 37
+        }
+      ]
+    },
+    {
+      "text": "you are winner of contest.",
+      "intent": "intent.fraud",
+      "entities": [
+        {
+          "entity": "award",
+          "startPos": 8,
+          "endPos": 13
+        }
+      ]
+    },
+    {
+      "text": "do you want to rent a house",
+      "intent": "intent.house",
+      "entities": [
+        {
+          "entity": "house",
+          "startPos": 22,
+          "endPos": 26
+        }
+      ]
+    },
+    {
+      "text": "do you want to see a house?",
+      "intent": "intent.house",
+      "entities": [
+        {
+          "entity": "house",
+          "startPos": 21,
+          "endPos": 25
+        }
+      ]
+    },
+    {
+      "text": "can you believe you just won a trophy?",
+      "intent": "intent.fraud",
+      "entities": [
+        {
+          "entity": "award",
+          "startPos": 31,
+          "endPos": 36
+        }
+      ]
+    },
+    {
+      "text": "you just gotta a reward",
+      "intent": "intent.fraud",
+      "entities": [
+        {
+          "entity": "award",
+          "startPos": 17,
+          "endPos": 22
+        }
+      ]
+    },
+    {
+      "text": "do your family need any funding to buy property?",
+      "intent": "intent.loan",
+      "entities": [
+        {
+          "entity": "loan",
+          "startPos": 24,
+          "endPos": 30
+        }
+      ]
+    },
+    {
+      "text": "your family wants any lending",
+      "intent": "intent.loan",
+      "entities": [
+        {
+          "entity": "loan",
+          "startPos": 22,
+          "endPos": 28
+        }
+      ]
+    },
+    {
+      "text": "does your business need any funding",
+      "intent": "intent.loan",
+      "entities": [
+        {
+          "entity": "loan",
+          "startPos": 28,
+          "endPos": 34
+        }
+      ]
+    },
+    {
+      "text": "do your family need to buy any property",
+      "intent": "intent.house",
+      "entities": [
+        {
+          "entity": "house",
+          "startPos": 31,
+          "endPos": 38
+        }
+      ]
+    },
+    {
+      "text": "you may find this business insurance very reasonable",
+      "intent": "intent.insurance",
+      "entities": [
+        {
+          "entity": "Insurance",
+          "startPos": 18,
+          "endPos": 35
+        }
+      ]
+    },
+    {
+      "text": "i'd like to introduce property insurance for your family",
+      "intent": "intent.insurance",
+      "entities": [
+        {
+          "entity": "Insurance",
+          "startPos": 22,
+          "endPos": 39
+        }
+      ]
+    },
+    {
+      "text": "have you ever insured yourself?",
+      "intent": "intent.insurance",
+      "entities": [
+        {
+          "entity": "Insurance",
+          "startPos": 14,
+          "endPos": 20
+        }
+      ]
+    }
+  ]
+}
