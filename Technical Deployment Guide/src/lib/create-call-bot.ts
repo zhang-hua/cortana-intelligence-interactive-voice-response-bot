@@ -11,6 +11,11 @@ import { BOT_SETTINGS } from './settings';
 
 export default function createBot(connector: ICallConnector, botStorage?: IBotStorage): UniversalCallBot {
   BOT_SETTINGS.storage = botStorage || BOT_STORAGE;
+  console.info(BOT_SETTINGS.promptDefaults);
+  BOT_SETTINGS.promptDefaults = {
+    culture: 'zh-CN',
+    voice: 'male',
+  }
   const bot = new UniversalCallBot(connector, BOT_SETTINGS);
   bot.on('error', console.error);
   bot.library(BOT_SPEECH_LIB);

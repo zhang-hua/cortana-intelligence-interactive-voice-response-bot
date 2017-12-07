@@ -38,6 +38,56 @@ ORDER_PRODUCT_LIB.dialog(ORDER_PRODUCT_ROOT, [
   },
 ]);
 
+ORDER_PRODUCT_LIB.dialog('/smartmobot', [
+    (session: CallSession, args, next) => {
+        SpeechDialog.understandSpeech(session, 'Hello! what can I do for you?');
+    },
+    // (session: CallSession, args, next) => {
+    //     if (args.error) {
+    //         return session.error(args.error);
+    //     }
+    //     else if (args.response.language.topScoringIntent.intent === 'intent.hello' ) {
+    //         botbuilder_calling_speech_1.SpeechDialog.understandSpeech(session, 'yep, what can I do for you?');
+    //     }
+    // },
+    (session: CallSession, args, next) => {
+        console.log('Bot Received Intention:\n', args.response.language);
+        if (args.error) {
+            return session.error(args.error);
+        }
+        else if (args.response.language.topScoringIntent.intent === 'intent.house' ) {
+            console.log('Bot Received intent.house' );
+            console.log('Bot Speech Reponse:', 'sorry, I do not have any interest in real estate. Goodbye!' );
+            return session.endDialog('sorry, I do not have any interest in real estate. Goodbye!');
+        }
+        else if (args.response.language.topScoringIntent.intent === 'intent.insurance' ) {
+            console.log('Bot Received intent.insurance' );
+            console.log('Bot Speech Reponse:', 'No thanks! I already have insurance. Goodbye!' );
+            return session.endDialog('No thanks! I already have insurance. Goodbye!');
+        }
+        else if (args.response.language.topScoringIntent.intent === 'intent.loan' ) {
+            console.log('Bot Received intent.loan' );
+            console.log('Bot Speech Reponse:', 'No, I do not need loan! Goodbye!' );
+            return session.endDialog('No, I do not need loan! Goodbye!');
+        }
+        else if (args.response.language.topScoringIntent.intent === 'intent.fraud' ) {
+            console.warn('Bot Received intent.fraud' );
+            console.log('Bot Speech Reponse:', 'Do not trick me!' );
+            return session.endDialog('Do not trick me!');
+        }
+        else {
+            console.log('Bot Received normal call' );
+            console.log('Bot Speech Reponse:', 'Hold on please. oops, Mr. Zhang is not available now, will let him know later.' );
+            session.send('Hold on please. oops, Mr. Zhang is not available now, will let him know later.');
+            SpeechDialog.understandSpeech(session, 'can you leave a message for him?');
+        }
+    },
+    (session: CallSession, args, next) => {
+        console.log('Bot Received normal call' );
+        console.log('Bot Speech Reponse:', 'I have got your message, Thanks! Goodbye!' );
+        return session.endDialog('I have got your message, Thanks! Goodbye!');
+    },
+]);
  /**
   * DIALOG
   * query products from speech
